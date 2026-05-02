@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://c8n4oh4wbpuhc"]
+
+[ext_resource type="Script" uid="uid://bxa0s4oirjrw3" path="res://Scripts/character_scripts/player.gd" id="1_0r5da"]
+[ext_resource type="Texture2D" uid="uid://djwkcc6d4qqjc" path="res://Assets/Characters/Leon/character1.png" id="1_kvnrr"]
+[ext_resource type="Texture2D" uid="uid://bqa3i4rp6x5xl" path="res://Assets/Characters/Leon/character2.png" id="2_0r5da"]
+[ext_resource type="Texture2D" uid="uid://cwjjil7cnbrws" path="res://Assets/Characters/Leon/character3.png" id="3_twm3q"]
+[ext_resource type="Texture2D" uid="uid://dw25mylgfc4k0" path="res://Assets/Characters/Leon/character4.png" id="4_fgiwp"]
+[ext_resource type="Texture2D" uid="uid://dlhrvjx2js46f" path="res://Assets/Characters/Leon/character.png" id="5_8liwr"]
+[ext_resource type="PackedScene" uid="uid://djhit5cu7ixea" path="res://Scenes/weapons/neo_frontier.tscn" id="7_twm3q"]
+[ext_resource type="PackedScene" uid="uid://bic2ocaa4q3fr" path="res://Scenes/bullets/bullet.tscn" id="8_fgiwp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5cq8p"]
+atlas = ExtResource("5_8liwr")
+region = Rect2(0, 0, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2si0u"]
+atlas = ExtResource("5_8liwr")
+region = Rect2(33, 0, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2smwd"]
+atlas = ExtResource("5_8liwr")
+region = Rect2(66, 0, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gul8o"]
+atlas = ExtResource("5_8liwr")
+region = Rect2(99, 0, 33, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tf8qx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_kvnrr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_0r5da")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_twm3q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_fgiwp")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5cq8p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2si0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2smwd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gul8o")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 7.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sc2al"]
+radius = 6.0
+height = 12.0
+
+[node name="Player" type="CharacterBody2D" unique_id=2039685582]
+y_sort_enabled = true
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_0r5da")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=704547909]
+sprite_frames = SubResource("SpriteFrames_tf8qx")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1198369487]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_sc2al")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2001630624]
+zoom = Vector2(5, 5)
+
+[node name="WeaponHolder" type="Marker2D" parent="." unique_id=428306102]
+position = Vector2(-1, 6)
+
+[node name="NeoFrontier" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("7_twm3q")]
+bullet_scene = ExtResource("8_fgiwp")

@@ -1,0 +1,58 @@
+[gd_resource type="TileSet" format=3 uid="uid://bewiwmv7sdicr"]
+
+[ext_resource type="Texture2D" uid="uid://ds06cj2rc12le" path="res://Assets/Environment/Items/summer and spring items.png" id="1_7jc1c"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35xla"]
+texture = ExtResource("1_7jc1c")
+3:10/size_in_atlas = Vector2i(3, 3)
+3:10/0 = 0
+3:10/0/y_sort_origin = 16
+3:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(1.6539803, 8, 11.577866, 8.095802, 11.926071, 18.019688, 1.4798775, 18.19379)
+6:10/size_in_atlas = Vector2i(3, 3)
+6:10/0 = 0
+6:10/0/y_sort_origin = 16
+6:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(1.6539803, 8, 11.577866, 8.095802, 11.926071, 18.019688, 1.4798775, 18.19379)
+6:7/size_in_atlas = Vector2i(3, 3)
+6:7/0 = 0
+6:7/0/y_sort_origin = 16
+6:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(1.6539803, 8, 11.577866, 8.095802, 11.926071, 18.019688, 1.4798775, 18.19379)
+9:7/size_in_atlas = Vector2i(3, 3)
+9:7/0 = 0
+9:7/0/y_sort_origin = 16
+9:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(1.6539803, 8, 11.577866, 8.095802, 11.926071, 18.019688, 1.4798775, 18.19379)
+9:10/size_in_atlas = Vector2i(3, 3)
+9:10/0 = 0
+9:10/0/y_sort_origin = 16
+9:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(1.6539803, 8, 11.577866, 8.095802, 11.926071, 18.019688, 1.4798775, 18.19379)
+10:13/size_in_atlas = Vector2i(2, 2)
+10:13/0 = 0
+10:15/size_in_atlas = Vector2i(2, 2)
+10:15/0 = 0
+7:15/0 = 0
+7:15/0/y_sort_origin = 4
+6:15/0 = 0
+6:15/0/y_sort_origin = 4
+5:15/0 = 0
+5:15/0/y_sort_origin = 4
+4:14/0 = 0
+4:14/0/y_sort_origin = 4
+3:14/0 = 0
+3:14/0/y_sort_origin = 4
+6:14/0 = 0
+6:14/0/y_sort_origin = 4
+5:14/0 = 0
+5:14/0/y_sort_origin = 4
+4:7/size_in_atlas = Vector2i(2, 2)
+4:7/0 = 0
+4:7/0/y_sort_origin = 3
+4:9/size_in_atlas = Vector2i(2, 1)
+4:9/0 = 0
+4:9/0/y_sort_origin = 3
+2:13/size_in_atlas = Vector2i(2, 1)
+2:13/0 = 0
+2:13/0/physics_layer_0/polygon_0/points = PackedVector2Array(-6.7029753, -8, 3.0468063, -6.3547688, 5.1360455, 3.9173222, -6.3547688, 3.220909)
+
+[resource]
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
+sources/0 = SubResource("TileSetAtlasSource_35xla")
