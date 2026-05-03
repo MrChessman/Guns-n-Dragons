@@ -85,13 +85,12 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 		# --- NEW TARGETING LOGIC ---
 		var aim_pos: Vector2
 		if target_pos != Vector2.ZERO:
-			aim_pos = target_pos # The Enemy is aiming at the player!
+			aim_pos = target_pos
 		else:
-			aim_pos = get_global_mouse_position() # The Player is aiming with the mouse!
+			aim_pos = get_global_mouse_position()
 			
 		var base_aim_direction = (aim_pos - muzzle.global_position).normalized()
 		var final_aim_direction = base_aim_direction.rotated(spread_angle_rad)
-		# ---------------------------
 		
 		bullet.direction = final_aim_direction
 		bullet.global_rotation = final_aim_direction.angle()

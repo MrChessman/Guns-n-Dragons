@@ -32,8 +32,9 @@ height = 16.0
 
 [node name="Bullet" type="Area2D" unique_id=1138917344]
 collision_layer = 8
-collision_mask = 5
+collision_mask = 4
 script = ExtResource("1_sc5nk")
+speed = 200.0
 
 [node name="light_glow" type="Sprite2D" parent="." unique_id=1171731656]
 modulate = Color(0.7921569, 0.6901961, 0.38039216, 0.83137256)

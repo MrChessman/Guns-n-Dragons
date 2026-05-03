@@ -3,11 +3,32 @@
 [ext_resource type="Script" uid="uid://bxa0s4oirjrw3" path="res://Scripts/character_scripts/player.gd" id="1_0r5da"]
 [ext_resource type="Texture2D" uid="uid://djwkcc6d4qqjc" path="res://Assets/Characters/Leon/character1.png" id="1_kvnrr"]
 [ext_resource type="Texture2D" uid="uid://bqa3i4rp6x5xl" path="res://Assets/Characters/Leon/character2.png" id="2_0r5da"]
+[ext_resource type="Texture2D" uid="uid://8x02dij5js0x" path="res://Assets/Characters/Leon/dodge.png" id="2_8liwr"]
 [ext_resource type="Texture2D" uid="uid://cwjjil7cnbrws" path="res://Assets/Characters/Leon/character3.png" id="3_twm3q"]
 [ext_resource type="Texture2D" uid="uid://dw25mylgfc4k0" path="res://Assets/Characters/Leon/character4.png" id="4_fgiwp"]
 [ext_resource type="Texture2D" uid="uid://dlhrvjx2js46f" path="res://Assets/Characters/Leon/character.png" id="5_8liwr"]
 [ext_resource type="PackedScene" uid="uid://djhit5cu7ixea" path="res://Scenes/weapons/neo_frontier.tscn" id="7_twm3q"]
 [ext_resource type="PackedScene" uid="uid://bic2ocaa4q3fr" path="res://Scenes/bullets/bullet.tscn" id="8_fgiwp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tf8qx"]
+atlas = ExtResource("2_8liwr")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sc2al"]
+atlas = ExtResource("2_8liwr")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ny3fl"]
+atlas = ExtResource("2_8liwr")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5a6aj"]
+atlas = ExtResource("2_8liwr")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fq1sf"]
+atlas = ExtResource("2_8liwr")
+region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5cq8p"]
 atlas = ExtResource("5_8liwr")
@@ -27,6 +48,26 @@ region = Rect2(99, 0, 33, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tf8qx"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tf8qx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sc2al")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ny3fl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5a6aj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fq1sf")
+}],
+"loop": true,
+"name": &"dodge",
+"speed": 7.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_kvnrr")
@@ -71,11 +112,15 @@ y_sort_enabled = true
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_0r5da")
+speed = 100.0
+min_aim_distance = 45.0
+dodge_speed = 300.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=704547909]
 sprite_frames = SubResource("SpriteFrames_tf8qx")
-animation = &"idle"
+animation = &"dodge"
 autoplay = "idle"
+frame_progress = 0.4137796
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1198369487]
 position = Vector2(0, 4)
@@ -89,3 +134,4 @@ position = Vector2(-1, 6)
 
 [node name="NeoFrontier" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("7_twm3q")]
 bullet_scene = ExtResource("8_fgiwp")
+infinite_ammo = true

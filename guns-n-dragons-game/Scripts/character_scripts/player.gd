@@ -4,6 +4,14 @@ extends CharacterBody2D
 @export var min_aim_distance: float = 40.0
 @export var max_health: int = 5
 var current_health: int
+@export var dodge_speed: float = 600.0
+@export var dodge_duration: float = 0.25
+@export var dodge_cooldown: float = 0.8
+@export var invincibility_duration: float = 0.40
+var is_dodging: bool = false
+var can_dodge: bool = true
+var dodge_direction: Vector2 = Vector2.ZERO
+var is_invincible: bool = false
 @onready var leon: AnimatedSprite2D = $AnimatedSprite2D
 @onready var weapon_holder: Marker2D = $WeaponHolder
 
@@ -15,23 +23,29 @@ func _ready() -> void:
 		current_weapon = weapon_holder.get_child(0) as Weapon
 
 func _physics_process(delta: float) -> void:
-	var input_dir := Input.get_vector("move_left","move_right","move_up","move_down")
-	velocity = input_dir * speed
+	handle_dodge()
+	if is_dodging:
+		velocity = dodge_direction * dodge_speed
+	else:
+		var input_dir := Input.get_vector("move_left","move_right","move_up","move_down")
+		velocity = input_dir * speed
+		
 	move_and_slide()
 	
-	var mouse_pos := get_global_mouse_position()
-	var distance_to_mouse = global_position.distance_to(mouse_pos)
-	
-	update_facing_direction(mouse_pos)
-	update_animations()
-	
-	if current_weapon != null:
-		aim_weapon(mouse_pos)
-		if distance_to_mouse > min_aim_distance:
-			if Input.is_action_pressed("shoot"):
-				current_weapon.shoot()
-		if Input.is_action_just_pressed("reload"):
-			current_weapon.reload()
+	if not is_dodging:
+		var mouse_pos := get_global_mouse_position()
+		var distance_to_mouse = global_position.distance_to(mouse_pos)
+		
+		update_facing_direction(mouse_pos)
+		update_animations()
+		
+		if current_weapon != null:
+			aim_weapon(mouse_pos)
+			if distance_to_mouse > min_aim_distance:
+				if Input.is_action_pressed("shoot"):
+					current_weapon.shoot()
+			if Input.is_action_just_pressed("reload"):
+				current_weapon.reload()
 
 func aim_weapon(mouse_pos: Vector2) -> void:
 	weapon_holder.look_at(mouse_pos)
@@ -59,10 +73,10 @@ func equip_weapon(new_weapon_scene: PackedScene) -> void:
 	current_weapon = weapon_instance
 
 func take_damage(amount: int) -> void:
+	if is_invincible:
+		return
 	current_health -= amount
 	print("Leon took damage! Health remaining: ", current_health)
-	
-	# Damage Flash (turns red for 0.1 seconds)
 	leon.modulate = Color(1, 0, 0)
 	await get_tree().create_timer(0.1).timeout
 	leon.modulate = Color(1, 1, 1)
@@ -74,3 +88,29 @@ func die() -> void:
 	print("Leon has died! Restarting level...")
 	# For testing purposes, we simply restart the scene when you die
 	get_tree().reload_current_scene()
+
+func handle_dodge() -> void:
+	if Input.is_action_just_pressed("dodge") and can_dodge and not is_dodging:
+		is_dodging = true
+		can_dodge = false
+		is_invincible = true
+		
+		var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		if input_dir != Vector2.ZERO:
+			dodge_direction = input_dir.normalized()
+		else:
+			dodge_direction = (get_global_mouse_position() - global_position).normalized()
+			
+		leon.play("dodge")
+			
+		# --- NEW: Independent Invincibility Timer ---
+		# This turns off I-frames after the custom duration, even if we are still rolling!
+		get_tree().create_timer(invincibility_duration).timeout.connect(func(): is_invincible = false)
+		
+		# Wait for the physical rolling movement to finish
+		await get_tree().create_timer(dodge_duration).timeout
+		is_dodging = false
+		
+		# Wait for the cooldown before allowing another roll
+		await get_tree().create_timer(dodge_cooldown).timeout
+		can_dodge = true

@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://44aty0lu4c6d" path="res://Assets/Characters/Enemies/idle/cowboy_idle_right_spritesheet.png" id="1_fv1pp"]
 [ext_resource type="Script" uid="uid://bit0u0ox35yhq" path="res://Scripts/character_scripts/enemy_dummy.gd" id="1_jkw2o"]
 [ext_resource type="Texture2D" uid="uid://bse4i78ysxsy4" path="res://Assets/Characters/Enemies/idle/cowboy_idle_spritesheet.png" id="1_msq7b"]
+[ext_resource type="Texture2D" uid="uid://cn2gagtm07lyx" path="res://Assets/Characters/Enemies/death/cowboy_death_spritesheet.png" id="2_4jbk0"]
 [ext_resource type="Texture2D" uid="uid://gvvsgtj4yqfs" path="res://Assets/Characters/Enemies/idle/cowboy_idle_up_spritesheet.png" id="3_jkw2o"]
 [ext_resource type="Texture2D" uid="uid://dwe5julf7eob0" path="res://Assets/Characters/Enemies/walk/cowboy_walk_down_spritesheet.png" id="4_781at"]
 [ext_resource type="Texture2D" uid="uid://doso2bblttfbg" path="res://Assets/Characters/Enemies/walk/cowboy_walk_left_sritesheet.png" id="5_ndgx4"]
@@ -10,6 +11,30 @@
 [ext_resource type="Texture2D" uid="uid://iqonpud8tse" path="res://Assets/Characters/Enemies/walk/cowboy_walk_up_spritesheet.png" id="7_nwpo6"]
 [ext_resource type="PackedScene" uid="uid://djhit5cu7ixea" path="res://Scenes/weapons/neo_frontier.tscn" id="9_ndgx4"]
 [ext_resource type="PackedScene" uid="uid://d38xl74hc13tt" path="res://Scenes/bullets/enemy_bullet.tscn" id="10_4jbk0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwpo6"]
+atlas = ExtResource("2_4jbk0")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jm6i8"]
+atlas = ExtResource("2_4jbk0")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4j8n"]
+atlas = ExtResource("2_4jbk0")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_os2ow"]
+atlas = ExtResource("2_4jbk0")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qn7ov"]
+atlas = ExtResource("2_4jbk0")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wj2eq"]
+atlas = ExtResource("2_4jbk0")
+region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o0qhq"]
 atlas = ExtResource("1_msq7b")
@@ -125,6 +150,29 @@ region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kupak"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwpo6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jm6i8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4j8n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_os2ow")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qn7ov")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wj2eq")
+}],
+"loop": false,
+"name": &"death",
+"speed": 7.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_o0qhq")
@@ -268,9 +316,10 @@ script = ExtResource("1_jkw2o")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1297792265]
 sprite_frames = SubResource("SpriteFrames_kupak")
-animation = &"idle_down"
+animation = &"death"
 autoplay = "idle_down"
-frame_progress = 0.25662583
+frame = 5
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1258798298]
 position = Vector2(0, 4)

@@ -32,9 +32,9 @@ height = 16.0
 
 [node name="Bullet" type="Area2D" unique_id=1138917344]
 collision_layer = 8
-collision_mask = 7
+collision_mask = 2
 script = ExtResource("1_4723t")
-speed = 200.0
+speed = 100.0
 is_enemy_bullet = true
 
 [node name="light_glow" type="Sprite2D" parent="." unique_id=1171731656]
