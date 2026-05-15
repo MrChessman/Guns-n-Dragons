@@ -27,14 +27,15 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mqy6c"]
-radius = 3.0
-height = 16.0
+radius = 4.0
+height = 18.0
 
 [node name="Bullet" type="Area2D" unique_id=1138917344]
+z_index = 1
 collision_layer = 8
-collision_mask = 4
+collision_mask = 132
 script = ExtResource("1_sc5nk")
-speed = 200.0
+speed = 300.0
 
 [node name="light_glow" type="Sprite2D" parent="." unique_id=1171731656]
 modulate = Color(0.7921569, 0.6901961, 0.38039216, 0.83137256)
@@ -54,7 +55,7 @@ rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_mqy6c")
 
 [node name="Timer" type="Timer" parent="." unique_id=1237187840]
-wait_time = 1.5
+wait_time = 5.0
 one_shot = true
 autostart = true
 

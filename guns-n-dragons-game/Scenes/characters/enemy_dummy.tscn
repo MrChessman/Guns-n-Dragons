@@ -9,8 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://doso2bblttfbg" path="res://Assets/Characters/Enemies/walk/cowboy_walk_left_sritesheet.png" id="5_ndgx4"]
 [ext_resource type="Texture2D" uid="uid://cnibyolkxbbv2" path="res://Assets/Characters/Enemies/walk/cowboy_walk_right-spritesheet.png" id="6_4jbk0"]
 [ext_resource type="Texture2D" uid="uid://iqonpud8tse" path="res://Assets/Characters/Enemies/walk/cowboy_walk_up_spritesheet.png" id="7_nwpo6"]
-[ext_resource type="PackedScene" uid="uid://djhit5cu7ixea" path="res://Scenes/weapons/neo_frontier.tscn" id="9_ndgx4"]
 [ext_resource type="PackedScene" uid="uid://d38xl74hc13tt" path="res://Scenes/bullets/enemy_bullet.tscn" id="10_4jbk0"]
+[ext_resource type="PackedScene" uid="uid://dqm762dyhg0cq" path="res://Scenes/weapons/ak_47.tscn" id="10_ndgx4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nwpo6"]
 atlas = ExtResource("2_4jbk0")
@@ -303,16 +303,18 @@ radius = 3.0
 height = 6.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_msq7b"]
-radius = 7.0
-height = 18.0
+radius = 11.0
+height = 28.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jkw2o"]
 radius = 130.0
 
 [node name="EnemyDummy" type="CharacterBody2D" unique_id=2007932104]
+position = Vector2(0, -9)
 collision_layer = 4
-collision_mask = 3
+collision_mask = 195
 script = ExtResource("1_jkw2o")
+shots_firing = 3
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1297792265]
 sprite_frames = SubResource("SpriteFrames_kupak")
@@ -346,11 +348,13 @@ shape = SubResource("CircleShape2D_jkw2o")
 
 [node name="WeaponHolder" type="Marker2D" parent="." unique_id=955612959]
 
-[node name="NeoFrontier" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("9_ndgx4")]
+[node name="Ak47" parent="WeaponHolder" unique_id=1996530527 instance=ExtResource("10_ndgx4")]
 bullet_scene = ExtResource("10_4jbk0")
-fire_rate = 0.2
 infinite_ammo = true
 accurate_shots = 1
+spread_per_shot = 10.0
+max_spread = 20.0
+recoil_reset_time = 1.0
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

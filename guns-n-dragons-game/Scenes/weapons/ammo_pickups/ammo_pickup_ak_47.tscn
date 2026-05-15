@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://2gpyiqjyhep3"]
+
+[ext_resource type="Script" uid="uid://syg8gvyiny33" path="res://Scripts/weapon_script/ammo_pickups/ammo_pickup.gd" id="1_xfjga"]
+[ext_resource type="Texture2D" uid="uid://cpslbjudci61m" path="res://Assets/Weapons/ammo_sprites/Amo3.png" id="1_ywo6i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xfjga"]
+size = Vector2(80.00001, 80.00001)
+
+[node name="AmmoPickupAk47" type="Area2D" unique_id=745727352]
+scale = Vector2(0.5, 0.5)
+collision_layer = 32
+collision_mask = 3
+script = ExtResource("1_xfjga")
+target_weapon_id = "ak_47"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=895067]
+texture = ExtResource("1_ywo6i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1494718093]
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_xfjga")
+debug_color = Color(0, 0.64140224, 0.3357815, 0.41960785)

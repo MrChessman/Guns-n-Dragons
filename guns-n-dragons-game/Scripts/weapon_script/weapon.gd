@@ -4,11 +4,13 @@ class_name Weapon
 
 #Weapon Stats
 @export_category("Weapon Stats")
+@export var weapon_id: String = ""
 @export var bullet_scene: PackedScene
 @export var damage: int = 1
 @export var fire_rate: float = 0.5
 @export var mag_size: int = 6
 @export var max_ammo: int = 30
+@export var reserve_ammo: int = 60 
 @export var infinite_ammo: bool = true
 @export var reload_time: float = 1.5
 
@@ -25,10 +27,13 @@ var can_shoot: bool = true
 var is_reloading: bool = false
 var consecutive_shots: int = 0
 var current_spread: float = 0.0
-
+@onready var area = get_node_or_null("Area2D")
+@onready var inspect_ui = get_node_or_null("InspectUI")
 #References
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var muzzle: Marker2D = $Muzzle
+var is_player_near: bool = false
+var player_ref: Node2D = null
 
 #Timers
 var fire_rate_timer: Timer
@@ -36,6 +41,8 @@ var reload_timer: Timer
 var recoil_reset_timer: Timer
 
 func _ready() -> void:
+	if get_parent() != null and get_parent().name != "WeaponHolder":
+		Global.mark_weapon_dropped(weapon_id)
 	current_ammo = mag_size
 	
 	fire_rate_timer = Timer.new()
@@ -52,7 +59,11 @@ func _ready() -> void:
 	recoil_reset_timer.one_shot = true
 	recoil_reset_timer.timeout.connect(_on_recoil_reset_timeout)
 	add_child(recoil_reset_timer)
-
+	 # Turn on pick-up detection if the gun has the Area2D and InspectUI attached
+	if area != null:
+		area.body_entered.connect(_on_body_entered)
+		area.body_exited.connect(_on_body_exited)
+		
 func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 	if not can_shoot or is_reloading:
 		return
@@ -95,12 +106,13 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 		bullet.direction = final_aim_direction
 		bullet.global_rotation = final_aim_direction.angle()
 		bullet.damage = damage
-		get_tree().root.add_child(bullet)
+		var main_level = get_tree().current_scene
+		main_level.add_child(bullet)
 	
 	fire_rate_timer.start(fire_rate)
 
 func reload() -> void:
-	if is_reloading or current_ammo == mag_size or (max_ammo <= 0 and not infinite_ammo):
+	if is_reloading or current_ammo == mag_size or (reserve_ammo <= 0 and not infinite_ammo):
 		return
 	
 	is_reloading = true
@@ -120,9 +132,9 @@ func _on_reload_timeout() -> void:
 	if infinite_ammo:
 		current_ammo = mag_size
 	else:
-		var ammo_to_add = min(needed_ammo, max_ammo)
+		var ammo_to_add = min(needed_ammo, reserve_ammo)
 		current_ammo += ammo_to_add
-		max_ammo -= ammo_to_add
+		reserve_ammo -= ammo_to_add
 	
 	is_reloading = false
 	animated_sprite_2d.speed_scale = 1.0
@@ -136,3 +148,27 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 func _on_recoil_reset_timeout() -> void:
 	consecutive_shots = 0
 	current_spread = 0.0
+
+func _on_body_entered(body: Node2D) -> void:
+	if get_parent().name != "WeaponHolder" and body.has_method("add_weapon"):
+		is_player_near = true
+		player_ref = body
+		if inspect_ui != null:
+			inspect_ui.visible = true
+
+func _on_body_exited(body: Node2D) -> void:
+	if body.has_method("add_weapon"):
+		is_player_near = false
+		player_ref = null
+		if inspect_ui != null:
+			inspect_ui.visible = false
+
+func _unhandled_input(event: InputEvent) -> void:
+	if is_player_near and event.is_action_pressed("grab") and player_ref != null:
+		if get_parent().name != "WeaponHolder":
+			is_player_near = false
+			if inspect_ui != null:
+				inspect_ui.visible = false
+			Global.unlock_weapon(weapon_id)
+			Global.mark_weapon_picked_up(weapon_id)
+			queue_free()

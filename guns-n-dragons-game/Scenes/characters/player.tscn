@@ -7,8 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cwjjil7cnbrws" path="res://Assets/Characters/Leon/character3.png" id="3_twm3q"]
 [ext_resource type="Texture2D" uid="uid://dw25mylgfc4k0" path="res://Assets/Characters/Leon/character4.png" id="4_fgiwp"]
 [ext_resource type="Texture2D" uid="uid://dlhrvjx2js46f" path="res://Assets/Characters/Leon/character.png" id="5_8liwr"]
-[ext_resource type="PackedScene" uid="uid://djhit5cu7ixea" path="res://Scenes/weapons/neo_frontier.tscn" id="7_twm3q"]
-[ext_resource type="PackedScene" uid="uid://bic2ocaa4q3fr" path="res://Scenes/bullets/bullet.tscn" id="8_fgiwp"]
+[ext_resource type="PackedScene" uid="uid://djhit5cu7ixea" path="res://Scenes/weapons/pistol.tscn" id="7_twm3q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tf8qx"]
 atlas = ExtResource("2_8liwr")
@@ -109,8 +108,9 @@ height = 12.0
 
 [node name="Player" type="CharacterBody2D" unique_id=2039685582]
 y_sort_enabled = true
+position = Vector2(0, -12)
 collision_layer = 2
-collision_mask = 5
+collision_mask = 197
 script = ExtResource("1_0r5da")
 speed = 100.0
 min_aim_distance = 45.0
@@ -130,8 +130,8 @@ shape = SubResource("CapsuleShape2D_sc2al")
 zoom = Vector2(5, 5)
 
 [node name="WeaponHolder" type="Marker2D" parent="." unique_id=428306102]
-position = Vector2(-1, 6)
+position = Vector2(1, 6)
 
 [node name="NeoFrontier" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("7_twm3q")]
-bullet_scene = ExtResource("8_fgiwp")
+position = Vector2(-2, 0)
 infinite_ammo = true

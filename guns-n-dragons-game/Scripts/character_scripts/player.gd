@@ -16,11 +16,15 @@ var is_invincible: bool = false
 @onready var weapon_holder: Marker2D = $WeaponHolder
 
 var current_weapon: Weapon = null
+var unlocked_weapons: Array[Weapon] = []
 
 func _ready() -> void:
+	Global.weapon_unlocked_signal.connect(_on_weapon_unlocked)
 	current_health = max_health
 	if weapon_holder.get_child_count() > 0:
 		current_weapon = weapon_holder.get_child(0) as Weapon
+		if current_weapon != null:
+			unlocked_weapons.append(current_weapon)
 
 func _physics_process(delta: float) -> void:
 	handle_dodge()
@@ -64,13 +68,61 @@ func update_animations() -> void:
 	else:
 		leon.play("idle") 
 
-func equip_weapon(new_weapon_scene: PackedScene) -> void:
-	if current_weapon != null:
-		current_weapon.queue_free()
+func switch_weapon(index: int) -> void:
+	if index >= 0 and index < unlocked_weapons.size():
+		# Hide all weapons
+		for w in unlocked_weapons:
+			w.visible = false
+			
+		# Show the newly selected one
+		current_weapon = unlocked_weapons[index]
+		current_weapon.visible = true
+
+func add_weapon(new_weapon_node: Node) -> void:
+	# 1. Grab the file path so we know EXACTLY what weapon to spawn a clean copy of
+	var weapon_file_path = new_weapon_node.scene_file_path
+	var raw_weapon_name = new_weapon_node.name
 	
-	var weapon_instance = new_weapon_scene.instantiate() as Weapon
-	weapon_holder.add_child(weapon_instance)
-	current_weapon = weapon_instance
+	# 2. Check if we already have it
+	for w in unlocked_weapons:
+		if w.scene_file_path == weapon_file_path:
+			print("We already have a ", raw_weapon_name, " - Destroying duplicate!")
+			# (Later we will add ammo to our existing gun here!)
+			new_weapon_node.queue_free()
+			return 
+			
+	# 3. Create a fresh, clean Player version of the weapon
+	var clean_weapon_scene = load(weapon_file_path) as PackedScene
+	var clean_weapon = clean_weapon_scene.instantiate() as Weapon
+	
+	# 4. Ensure it always uses the Player's bullet and ammo rules
+	clean_weapon.bullet_scene = load("res://Scenes/bullets/bullet.tscn")
+	clean_weapon.infinite_ammo = false
+	
+	# 5. Add our clean weapon to Leon, and destroy the dirty enemy one
+	weapon_holder.add_child(clean_weapon)
+	clean_weapon.position = Vector2.ZERO
+	clean_weapon.rotation = 0
+	new_weapon_node.queue_free()
+	
+	# 6. Add it to our inventory list and switch to it!
+	unlocked_weapons.append(clean_weapon)
+	switch_weapon(unlocked_weapons.size() - 1)
+
+func _on_weapon_unlocked(weapon_id: String) -> void:
+	# Ask Global for the path directly
+	var scene_path: String = Global.get_weapon_scene_path(weapon_id)
+		
+	# If we found a valid path, spawn the gun into our hands!
+	if scene_path != "":
+		var weapon_scene = load(scene_path) as PackedScene
+		var clean_weapon = weapon_scene.instantiate() as Weapon
+		clean_weapon.rotation = 0
+		weapon_holder.add_child(clean_weapon)
+		
+		# Add to our local inventory list and automatically switch to it
+		unlocked_weapons.append(clean_weapon)
+		switch_weapon(unlocked_weapons.size() - 1)
 
 func take_damage(amount: int) -> void:
 	if is_invincible:
@@ -114,3 +166,14 @@ func handle_dodge() -> void:
 		# Wait for the cooldown before allowing another roll
 		await get_tree().create_timer(dodge_cooldown).timeout
 		can_dodge = true
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_1:
+			switch_weapon(0) # Slot 1
+		elif event.keycode == KEY_2:
+			switch_weapon(1) # Slot 2
+		elif event.keycode == KEY_3:
+			switch_weapon(2) # Slot 3
+		elif event.keycode == KEY_4:
+			switch_weapon(3) # Slot 4

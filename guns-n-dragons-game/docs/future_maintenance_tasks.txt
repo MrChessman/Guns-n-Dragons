@@ -1,0 +1,25 @@
+Future Maintenance & Refactoring Tasks for Guns-n-Dragons
+
+1. Resource‑Driven Weapon Stats
+   - Create a `WeaponStats.gd` Resource (`class_name WeaponStats : Resource`) containing all exported weapon properties (damage, fire_rate, mag_size, max_ammo, etc.).
+   - Create individual `.tres` files for each weapon type and assign them in the Inspector instead of hard‑coding stats in `weapon.gd`.
+
+2. Scene‑Based Timers
+   - Add child Timer nodes (FireRateTimer, ReloadTimer, RecoilResetTimer) directly in each Weapon scene.
+   - Wire their `timeout()` signals to your existing callbacks (`_on_fire_rate_timeout()`, etc.).
+   - Replace the `Timer.new()` logic in `weapon.gd` with `@onready var fire_rate_timer = $FireRateTimer`, etc.
+
+3. Signal‑Driven UI Updates
+   - In `weapon.gd`, define signals such as `signal ammo_changed(current: int, reserve: int)`, `signal reload_started()`, and `signal reload_finished()`.
+   - Emit `ammo_changed(current_ammo, max_ammo)` whenever ammo values change.
+   - In `HUD.gd`, connect to those signals and update the labels only when data changes (instead of polling every frame).
+
+4. Enforce Type Hints & Docstrings
+   - Add return‑type hints (`-> void`, `-> bool`, etc.) on all functions.
+   - Prepend key sections with brief comments explaining non‑obvious logic (e.g. recoil calculation, stuck watchdog).
+
+5. Centralize Magic Strings & Paths
+   - Define constants for node names, input actions, group names (e.g. `const WEAPON_HOLDER = "WeaponHolder"`, `const INPUT_GRAB = "grab"`).
+   - Use `is_in_group("weapon_holders")` instead of literal node‑name checks to avoid typos.
+
+Implementing these tasks over time will keep your codebase modular, maintainable, and easy to tune without digging into scripts.
