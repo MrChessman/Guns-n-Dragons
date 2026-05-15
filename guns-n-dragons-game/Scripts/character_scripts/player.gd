@@ -18,9 +18,12 @@ var is_invincible: bool = false
 var current_weapon: Weapon = null
 var unlocked_weapons: Array[Weapon] = []
 
+signal health_changed(current, max)
+
 func _ready() -> void:
 	Global.weapon_unlocked_signal.connect(_on_weapon_unlocked)
 	current_health = max_health
+	health_changed.emit(current_health, max_health)
 	if weapon_holder.get_child_count() > 0:
 		current_weapon = weapon_holder.get_child(0) as Weapon
 		if current_weapon != null:
@@ -128,6 +131,7 @@ func take_damage(amount: int) -> void:
 	if is_invincible:
 		return
 	current_health -= amount
+	health_changed.emit(current_health, max_health)
 	print("Leon took damage! Health remaining: ", current_health)
 	leon.modulate = Color(1, 0, 0)
 	await get_tree().create_timer(0.1).timeout

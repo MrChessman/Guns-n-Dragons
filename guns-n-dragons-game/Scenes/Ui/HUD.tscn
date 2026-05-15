@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ctartplrmuefb" path="res://Assets/Weapons/guns.png" id="2_e8xii"]
 [ext_resource type="Texture2D" uid="uid://cpslbjudci61m" path="res://Assets/Weapons/ammo_sprites/Amo3.png" id="4_e8xii"]
 [ext_resource type="Texture2D" uid="uid://bjjkn58ek1ax8" path="res://Assets/Extras/infinity.png" id="6_v3tq4"]
+[ext_resource type="Texture2D" uid="uid://dk876j1shsg2h" path="res://Assets/UI/selector/fantasy.png" id="7_kc5n5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e8xii"]
 texture = ExtResource("1_mm02d")
@@ -19,14 +20,22 @@ region_rect = Rect2(0, 0, 96, 65)
 atlas = ExtResource("2_e8xii")
 region = Rect2(17, 66, 12, 15)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_kc5n5"]
+atlas = ExtResource("7_kc5n5")
+region = Rect2(1, 3, 79, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jhah"]
+atlas = ExtResource("7_kc5n5")
+region = Rect2(191, 181, 49, 8)
+
 [node name="HUD" type="CanvasLayer" unique_id=1998676316]
 script = ExtResource("1_mdyde")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=289908341]
-offset_left = 45.0
-offset_top = 94.0
-offset_right = 415.0
-offset_bottom = 157.0
+offset_left = 64.0
+offset_top = 281.0
+offset_right = 507.0
+offset_bottom = 344.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_e8xii")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=171448464]
@@ -74,3 +83,19 @@ custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 texture = ExtResource("6_v3tq4")
 stretch_mode = 5
+
+[node name="PortraitBox" type="TextureRect" parent="." unique_id=1866217927]
+offset_left = 29.0
+offset_top = 23.0
+offset_right = 656.0
+offset_bottom = 234.0
+texture = SubResource("AtlasTexture_kc5n5")
+
+[node name="HealthBar" type="TextureProgressBar" parent="PortraitBox" unique_id=1166704080]
+layout_mode = 0
+offset_left = 210.0
+offset_top = 21.0
+offset_right = 615.0
+offset_bottom = 65.0
+nine_patch_stretch = true
+texture_progress = SubResource("AtlasTexture_1jhah")

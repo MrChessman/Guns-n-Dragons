@@ -134,4 +134,3 @@ position = Vector2(1, 6)
 
 [node name="NeoFrontier" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("7_twm3q")]
 position = Vector2(-2, 0)
-infinite_ammo = true

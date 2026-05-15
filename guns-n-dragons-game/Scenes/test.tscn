@@ -6,7 +6,7 @@
 [ext_resource type="TileSet" uid="uid://bgqpnv7n7xof2" path="res://TileSets/water.tres" id="2_ys1qc"]
 [ext_resource type="TileSet" uid="uid://bewiwmv7sdicr" path="res://TileSets/props.tres" id="4_ys1qc"]
 [ext_resource type="Texture2D" uid="uid://bilopoligqs74" path="res://Assets/Environment/Tilemaps/spring tilemap.png" id="5_i3aeo"]
-[ext_resource type="PackedScene" uid="uid://fbxmlnyr8wr3" path="res://Scenes/Ui/HUD_Ammo.tscn" id="7_5wyu1"]
+[ext_resource type="PackedScene" uid="uid://fbxmlnyr8wr3" path="res://Scenes/Ui/HUD.tscn" id="7_5wyu1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5wyu1"]
 texture = ExtResource("5_i3aeo")
