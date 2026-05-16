@@ -1,10 +1,11 @@
 extends CanvasLayer
 
-@onready var ammo_count: Label = $PanelContainer/HBoxContainer/AmmoCount
-@onready var reserve_ammo_count: Label = $PanelContainer/HBoxContainer/ReserveAmmocount
-@onready var max_reserve_icon: TextureRect = $PanelContainer/HBoxContainer/MaxReserveIcon
-@onready var current_infinity_icon: TextureRect = $PanelContainer/HBoxContainer/CurrentInfinityIcon
-@onready var reserve_infinity_icon: TextureRect = $PanelContainer/HBoxContainer/ReserveInfinityIcon
+@onready var ammo_count: Label = $PortraitBox/HBoxContainer/AmmoCount
+@onready var current_infinity_icon: TextureRect = $PortraitBox/HBoxContainer/CurrentInfinityIcon
+@onready var max_reserve_icon: TextureRect = $PortraitBox/HBoxContainer/MaxReserveIcon
+@onready var reserve_ammo_count: Label = $PortraitBox/HBoxContainer/ReserveAmmocount
+@onready var reserve_infinity_icon: TextureRect = $PortraitBox/HBoxContainer/ReserveInfinityIcon
+
 @onready var health_bar: TextureProgressBar = $PortraitBox/HealthBar
 
 func _ready() -> void:
