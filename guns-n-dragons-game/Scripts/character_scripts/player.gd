@@ -24,6 +24,7 @@ var current_weapon: Weapon = null
 var unlocked_weapons: Array[Weapon] = []
 
 signal health_changed(current, max)
+signal weapon_switched(new_weapon: Weapon)
 
 func _ready() -> void:
 	Global.weapon_unlocked_signal.connect(_on_weapon_unlocked)
@@ -33,6 +34,7 @@ func _ready() -> void:
 		current_weapon = weapon_holder.get_child(0) as Weapon
 		if current_weapon != null:
 			unlocked_weapons.append(current_weapon)
+			weapon_switched.emit(current_weapon)
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
@@ -91,6 +93,7 @@ func switch_weapon(index: int) -> void:
 
 		current_weapon = unlocked_weapons[index]
 		current_weapon.visible = true
+		weapon_switched.emit(current_weapon)
 
 func add_weapon(new_weapon_node: Node) -> void:
 	var weapon_file_path = new_weapon_node.scene_file_path

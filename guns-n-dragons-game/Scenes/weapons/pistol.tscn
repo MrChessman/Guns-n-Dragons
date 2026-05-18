@@ -1,13 +1,12 @@
 [gd_scene format=3 uid="uid://djhit5cu7ixea"]
 
 [ext_resource type="Script" uid="uid://bss2un3f4ftqx" path="res://Scripts/weapon_script/weapon.gd" id="1_48ina"]
-[ext_resource type="PackedScene" uid="uid://bic2ocaa4q3fr" path="res://Scenes/bullets/bullet.tscn" id="2_wuwmp"]
+[ext_resource type="Resource" uid="uid://cqyupumrujmbd" path="res://Scripts/weapon_script/weapon_data/player_weapon_stats/pistol_stats.tres" id="2_fb6wy"]
 [ext_resource type="Texture2D" uid="uid://cved7il4fe0j" path="res://Assets/Weapons/guns/pistol.png" id="3_fb6wy"]
 
 [node name="Pistol" type="Node2D" unique_id=1079545419]
 script = ExtResource("1_48ina")
-weapon_id = "pistol"
-bullet_scene = ExtResource("2_wuwmp")
+stats = ExtResource("2_fb6wy")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1756843724]
 position = Vector2(3, -1)
@@ -16,3 +15,12 @@ texture = ExtResource("3_fb6wy")
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=2135537636]
 position = Vector2(11, -3)
+
+[node name="FireRateTimer" type="Timer" parent="." unique_id=969520464]
+one_shot = true
+
+[node name="ReloadTimer" type="Timer" parent="." unique_id=1489463242]
+one_shot = true
+
+[node name="RecoilResetTimer" type="Timer" parent="." unique_id=688924559]
+one_shot = true

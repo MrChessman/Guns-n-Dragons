@@ -8,24 +8,31 @@ extends CanvasLayer
 
 @onready var health_bar: TextureProgressBar = $PortraitBox/HealthBar
 
+var current_weapon_connected: Weapon = null
+
 func _ready() -> void:
 	var player = get_tree().get_current_scene().get_node("Player")
 	if player != null:
 		initialize_player_health(player)
+		player.weapon_switched.connect(_on_player_weapon_switched)
+		if player.current_weapon != null:
+			_on_player_weapon_switched(player.current_weapon)
 
-func _process(_delta: float) -> void:
-	var player = get_tree().get_current_scene().get_node("Player")
-	if player == null:
-		return
-	var weapon = player.current_weapon
-	if weapon == null:
-		return
-	_update_ammo_display(
-		weapon.current_ammo,
-		weapon.reserve_ammo, 
-		weapon.max_ammo, 
-		weapon.infinite_ammo
-	)
+func _on_player_weapon_switched(new_weapon: Weapon) -> void:
+	if current_weapon_connected != null:
+		if current_weapon_connected.ammo_changed.is_connected(_update_ammo_display):
+			current_weapon_connected.ammo_changed.disconnect(_update_ammo_display)
+			
+	current_weapon_connected = new_weapon
+	
+	if current_weapon_connected != null:
+		current_weapon_connected.ammo_changed.connect(_update_ammo_display)
+		_update_ammo_display(
+			current_weapon_connected.current_ammo,
+			current_weapon_connected.stats.reserve_ammo,
+			current_weapon_connected.stats.max_ammo,
+			current_weapon_connected.stats.infinite_ammo
+		)
 
 func initialize_player_health(player_node) -> void:
 	player_node.health_changed.connect(update_health)

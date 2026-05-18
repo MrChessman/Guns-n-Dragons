@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponStats" format=3 uid="uid://caro0esvty3f2"]
+
+[ext_resource type="PackedScene" uid="uid://bic2ocaa4q3fr" path="res://Scenes/bullets/bullet.tscn" id="1_rh578"]
+[ext_resource type="Script" uid="uid://c1okr2c7dhq6c" path="res://Scripts/weapon_script/weapon_stats.gd" id="2_w7w82"]
+
+[resource]
+script = ExtResource("2_w7w82")
+weapon_id = "ak47"
+bullet_scene = ExtResource("1_rh578")
+fire_rate = 0.15
+mag_size = 30
+max_ammo = 150
+infinite_ammo = false
+accurate_shots = 3
+metadata/_custom_type_script = "uid://c1okr2c7dhq6c"

@@ -189,7 +189,7 @@ func _on_attack_delay_timer_timeout() -> void:
 			for i in range(shots_firing):
 				if current_health <= 0: return 
 				weapon.shoot(locked_aim_position)
-				await get_tree().create_timer(weapon.fire_rate + 0.05).timeout
+				await get_tree().create_timer(weapon.stats.fire_rate + 0.05).timeout
 		await get_tree().create_timer(1.0).timeout
 		if current_health > 0 and current_state == State.SHOOTING:
 			if player != null:

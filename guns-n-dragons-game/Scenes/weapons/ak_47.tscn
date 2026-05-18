@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dqm762dyhg0cq"]
 
 [ext_resource type="Script" uid="uid://bss2un3f4ftqx" path="res://Scripts/weapon_script/weapon.gd" id="1_wps3p"]
-[ext_resource type="PackedScene" uid="uid://bic2ocaa4q3fr" path="res://Scenes/bullets/bullet.tscn" id="2_ggpnf"]
+[ext_resource type="Resource" uid="uid://caro0esvty3f2" path="res://Scripts/weapon_script/weapon_data/player_weapon_stats/ak47_stats.tres" id="2_ggpnf"]
 [ext_resource type="Texture2D" uid="uid://djb2dv3bujmrd" path="res://Assets/Weapons/guns/ak-47.png" id="3_ggpnf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0ns44"]
@@ -25,17 +25,7 @@ size = Vector2(54.5, 24)
 [node name="Ak47" type="Node2D" unique_id=1996530527]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_wps3p")
-weapon_id = "ak_47"
-bullet_scene = ExtResource("2_ggpnf")
-fire_rate = 0.25
-mag_size = 30
-max_ammo = 150
-infinite_ammo = false
-reload_time = 2.0
-accurate_shots = 3
-spread_per_shot = 2.5
-max_spread = 5.0
-recoil_reset_time = 0.6
+stats = ExtResource("2_ggpnf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=865244904]
 position = Vector2(7, 1)
@@ -64,3 +54,12 @@ offset_bottom = -19.0
 text = "Vandal"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="FireRateTimer" type="Timer" parent="." unique_id=1033617296]
+one_shot = true
+
+[node name="ReloadTimer" type="Timer" parent="." unique_id=995302599]
+one_shot = true
+
+[node name="RecoilResetTimer" type="Timer" parent="." unique_id=378257264]
+one_shot = true

@@ -1,25 +1,10 @@
 extends Node2D
 
 class_name Weapon
-
-#Weapon Stats
-@export_category("Weapon Stats")
-@export var weapon_id: String = ""
-@export var bullet_scene: PackedScene
-@export var damage: int = 1
-@export var fire_rate: float = 0.5
-@export var mag_size: int = 6
-@export var max_ammo: int = 30
-@export var reserve_ammo: int = 60 
-@export var infinite_ammo: bool = true
-@export var reload_time: float = 1.5
-
-#Recoil
-@export_category("Recoil Stats")
-@export var accurate_shots: int = 2 
-@export var spread_per_shot: float = 5.0
-@export var max_spread: float = 15.0
-@export var recoil_reset_time: float = 0.4
+signal ammo_changed(current: int, reserve: int, max: int, is_inf: bool)
+signal reload_started
+signal reload_finished
+@export var stats: WeaponStats
 
 #State
 var current_ammo: int = 0
@@ -36,29 +21,19 @@ var is_player_near: bool = false
 var player_ref: Node2D = null
 
 #Timers
-var fire_rate_timer: Timer
-var reload_timer: Timer
-var recoil_reset_timer: Timer
+@onready var fire_rate_timer: Timer = $FireRateTimer
+@onready var reload_timer: Timer = $ReloadTimer
+@onready var recoil_reset_timer: Timer = $RecoilResetTimer
 
 func _ready() -> void:
 	if get_parent() != null and get_parent().name != "WeaponHolder":
-		Global.mark_weapon_dropped(weapon_id)
-	current_ammo = mag_size
+		Global.mark_weapon_dropped(stats.weapon_id)
+	current_ammo = stats.mag_size
 	
-	fire_rate_timer = Timer.new()
-	fire_rate_timer.one_shot = true
 	fire_rate_timer.timeout.connect(_on_fire_rate_timeout)
-	add_child(fire_rate_timer)
-	
-	reload_timer = Timer.new()
-	reload_timer.one_shot = true
 	reload_timer.timeout.connect(_on_reload_timeout)
-	add_child(reload_timer)
-	
-	recoil_reset_timer = Timer.new()
-	recoil_reset_timer.one_shot = true
 	recoil_reset_timer.timeout.connect(_on_recoil_reset_timeout)
-	add_child(recoil_reset_timer)
+	
 	 # Turn on pick-up detection if the gun has the Area2D and InspectUI attached
 	if area != null:
 		area.body_entered.connect(_on_body_entered)
@@ -68,29 +43,30 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 	if not can_shoot or is_reloading:
 		return
 	
-	if current_ammo <= 0 and not infinite_ammo:
+	if current_ammo <= 0 and not stats.infinite_ammo:
 		reload()
 		return
 	
 	can_shoot = false
-	if not infinite_ammo:
+	if not stats.infinite_ammo:
 		current_ammo -= 1
+		ammo_changed.emit(current_ammo, stats.reserve_ammo, stats.max_ammo, stats.infinite_ammo)
 	
 	# We removed the animation lines here!
 	# (Later we will add muzzle flash visibility code here)
 	
 	var spread_angle_rad = 0.0
 	
-	if consecutive_shots >= accurate_shots:
+	if consecutive_shots >= stats.accurate_shots:
 		spread_angle_rad = deg_to_rad(randf_range(-current_spread, current_spread))
-		current_spread = min(current_spread + spread_per_shot, max_spread)
-	elif consecutive_shots == accurate_shots - 1:
-		current_spread += spread_per_shot
+		current_spread = min(current_spread + stats.spread_per_shot, stats.max_spread)
+	elif consecutive_shots == stats.accurate_shots - 1:
+		current_spread += stats.spread_per_shot
 	consecutive_shots += 1
-	recoil_reset_timer.start(recoil_reset_time)
+	recoil_reset_timer.start(stats.recoil_reset_time)
 	
-	if bullet_scene:
-		var bullet = bullet_scene.instantiate()
+	if stats.bullet_scene:
+		var bullet = stats.bullet_scene.instantiate()
 		bullet.global_position = muzzle.global_position
 		
 		# --- NEW TARGETING LOGIC ---
@@ -105,33 +81,36 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 		
 		bullet.direction = final_aim_direction
 		bullet.global_rotation = final_aim_direction.angle()
-		bullet.damage = damage
+		bullet.damage = stats.damage
 		var main_level = get_tree().current_scene
 		main_level.add_child(bullet)
 	
-	fire_rate_timer.start(fire_rate)
+	fire_rate_timer.start(stats.fire_rate)
 
 func reload() -> void:
-	if is_reloading or current_ammo == mag_size or (reserve_ammo <= 0 and not infinite_ammo):
+	if is_reloading or current_ammo == stats.mag_size or (stats.reserve_ammo <= 0 and not stats.infinite_ammo):
 		return
 	
 	is_reloading = true
-	reload_timer.start(reload_time)
+	reload_started.emit()
+	reload_timer.start(stats.reload_time)
 
 func _on_fire_rate_timeout() -> void:
 	can_shoot = true
 
 func _on_reload_timeout() -> void:
-	var needed_ammo = mag_size - current_ammo
+	var needed_ammo = stats.mag_size - current_ammo
 	
-	if infinite_ammo:
-		current_ammo = mag_size
+	if stats.infinite_ammo:
+		current_ammo = stats.mag_size
 	else:
-		var ammo_to_add = min(needed_ammo, reserve_ammo)
+		var ammo_to_add = min(needed_ammo, stats.reserve_ammo)
 		current_ammo += ammo_to_add
-		reserve_ammo -= ammo_to_add
+		stats.reserve_ammo -= ammo_to_add
 	
 	is_reloading = false
+	reload_finished.emit()
+	ammo_changed.emit(current_ammo, stats.reserve_ammo, stats.max_ammo, stats.infinite_ammo)
 
 func _on_recoil_reset_timeout() -> void:
 	consecutive_shots = 0
@@ -157,6 +136,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			is_player_near = false
 			if inspect_ui != null:
 				inspect_ui.visible = false
-			Global.unlock_weapon(weapon_id)
-			Global.mark_weapon_picked_up(weapon_id)
+			Global.unlock_weapon(stats.weapon_id)
+			Global.mark_weapon_picked_up(stats.weapon_id)
 			queue_free()

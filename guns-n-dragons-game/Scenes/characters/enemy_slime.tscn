@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bit0u0ox35yhq" path="res://Scripts/character_scripts/enemy_dummy.gd" id="1_xtil5"]
 [ext_resource type="Texture2D" uid="uid://dol2fx7su82pl" path="res://Assets/Characters/Enemies/slimeanims.png" id="2_jpfam"]
 [ext_resource type="PackedScene" uid="uid://djhit5cu7ixea" path="res://Scenes/weapons/pistol.tscn" id="3_xgvx3"]
-[ext_resource type="PackedScene" uid="uid://d38xl74hc13tt" path="res://Scenes/bullets/enemy_bullet.tscn" id="11_wkhqd"]
+[ext_resource type="Resource" uid="uid://dobgrnncusrrv" path="res://Scripts/weapon_script/weapon_data/enemy_weapon_stats/enemy_pistol.tres" id="4_jpfam"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1gfhl"]
 atlas = ExtResource("2_jpfam")
@@ -154,12 +154,7 @@ position = Vector2(0, 5)
 
 [node name="Pistol" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("3_xgvx3")]
 position = Vector2(0, 1)
-bullet_scene = ExtResource("11_wkhqd")
-fire_rate = 1.0
-accurate_shots = 1
-spread_per_shot = 10.0
-max_spread = 20.0
-recoil_reset_time = 2.0
+stats = ExtResource("4_jpfam")
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

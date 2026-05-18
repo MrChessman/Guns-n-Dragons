@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponStats" format=3 uid="uid://dobgrnncusrrv"]
+
+[ext_resource type="PackedScene" uid="uid://d38xl74hc13tt" path="res://Scenes/bullets/enemy_bullet.tscn" id="1_8d4bo"]
+[ext_resource type="Script" uid="uid://c1okr2c7dhq6c" path="res://Scripts/weapon_script/weapon_stats.gd" id="1_y1njy"]
+
+[resource]
+script = ExtResource("1_y1njy")
+weapon_id = "pistol"
+bullet_scene = ExtResource("1_8d4bo")
+fire_rate = 1.0
+accurate_shots = 1
+spread_per_shot = 10.0
+max_spread = 20.0
+recoil_reset_time = 1.0
+metadata/_custom_type_script = "uid://c1okr2c7dhq6c"
