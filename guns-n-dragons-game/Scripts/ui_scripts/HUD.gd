@@ -14,11 +14,9 @@ func _ready() -> void:
 		initialize_player_health(player)
 
 func _process(_delta: float) -> void:
-	# 1) Find your Player node in the current scene:
 	var player = get_tree().get_current_scene().get_node("Player")
 	if player == null:
 		return
-	# 2) Grab the active weapon (adjust this to your Player API):
 	var weapon = player.current_weapon
 	if weapon == null:
 		return
@@ -30,10 +28,7 @@ func _process(_delta: float) -> void:
 	)
 
 func initialize_player_health(player_node) -> void:
-	# 1. Connect to the signal for future damage
 	player_node.health_changed.connect(update_health)
-	
-	# 2. INSTANTLY update the bar using the player's current stats!
 	update_health(player_node.current_health, player_node.max_health)
 
 func update_health(current: int, max_hp: int) -> void:
@@ -42,7 +37,6 @@ func update_health(current: int, max_hp: int) -> void:
 
 func _update_ammo_display(current: int, reserve: int, max_ammo: int, infinite: bool) -> void:
 	if infinite:
-		# Hide text numbers, show BOTH infinity icons
 		ammo_count.visible = false
 		current_infinity_icon.visible = true
 		
@@ -51,7 +45,6 @@ func _update_ammo_display(current: int, reserve: int, max_ammo: int, infinite: b
 		reserve_ammo_count.visible = false
 		reserve_infinity_icon.visible = true
 	else:
-		# Show text numbers, hide BOTH infinity icons
 		ammo_count.visible = true
 		current_infinity_icon.visible = false
 		
@@ -59,7 +52,6 @@ func _update_ammo_display(current: int, reserve: int, max_ammo: int, infinite: b
 		
 		reserve_ammo_count.visible = true
 		reserve_infinity_icon.visible = false
-		
-		# Update text
+
 		ammo_count.text = str(current)
 		reserve_ammo_count.text = "%d / %d" % [reserve, max_ammo]

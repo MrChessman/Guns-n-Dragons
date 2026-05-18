@@ -30,7 +30,7 @@ var current_spread: float = 0.0
 @onready var area = get_node_or_null("Area2D")
 @onready var inspect_ui = get_node_or_null("InspectUI")
 #References
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var muzzle: Marker2D = $Muzzle
 var is_player_near: bool = false
 var player_ref: Node2D = null
@@ -76,8 +76,8 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 	if not infinite_ammo:
 		current_ammo -= 1
 	
-	animated_sprite_2d.speed_scale = 1.0 / fire_rate
-	animated_sprite_2d.play("shoot")
+	# We removed the animation lines here!
+	# (Later we will add muzzle flash visibility code here)
 	
 	var spread_angle_rad = 0.0
 	
@@ -116,11 +116,6 @@ func reload() -> void:
 		return
 	
 	is_reloading = true
-	
-	if animated_sprite_2d.sprite_frames.has_animation("reload"):
-		animated_sprite_2d.speed_scale = 1.0 / reload_time
-		animated_sprite_2d.play("reload")
-	
 	reload_timer.start(reload_time)
 
 func _on_fire_rate_timeout() -> void:
@@ -137,13 +132,6 @@ func _on_reload_timeout() -> void:
 		reserve_ammo -= ammo_to_add
 	
 	is_reloading = false
-	animated_sprite_2d.speed_scale = 1.0
-	animated_sprite_2d.play("idle")
-
-func _on_animated_sprite_2d_animation_finished() -> void:
-	if animated_sprite_2d.animation == "shoot" and not is_reloading:
-		animated_sprite_2d.speed_scale = 1.0
-		animated_sprite_2d.play("idle")
 
 func _on_recoil_reset_timeout() -> void:
 	consecutive_shots = 0

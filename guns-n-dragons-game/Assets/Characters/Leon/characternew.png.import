@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rtqeqokvl08c"
-path="res://.godot/imported/cowboy_spritesheet.png-424161539e3d9650d458501279bf13e6.ctex"
+uid="uid://c8ol25enc1xsl"
+path="res://.godot/imported/characternew.png-e3a2f66bc75d1143c35ffe82ce776bb9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Characters/Enemies/idle/cowboy_spritesheet.png"
-dest_files=["res://.godot/imported/cowboy_spritesheet.png-424161539e3d9650d458501279bf13e6.ctex"]
+source_file="res://Assets/Characters/Leon/characternew.png"
+dest_files=["res://.godot/imported/characternew.png-e3a2f66bc75d1143c35ffe82ce776bb9.ctex"]
 
 [params]
 

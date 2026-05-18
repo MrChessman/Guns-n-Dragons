@@ -5,6 +5,10 @@ extends CharacterBody2D
 @export var wander_speed: float = 30.0 
 @export var preferred_distance: float = 100.0
 @export var shots_firing: int = 1
+@export_category("Loot Drops")
+@export var drops_weapon_id: String = "" 
+@export var drops_ammo_scene: PackedScene 
+@export var drops_skill_point_chance: float = 0.20
 
 enum State {IDLE, WANDERING, STRAFING, SHOOTING, SEARCHING, DEAD}
 var current_state: State = State.IDLE
@@ -120,25 +124,19 @@ func strafe_movement() -> void:
 
 func update_animations(is_moving: bool, look_target: Vector2) -> void:
 	var dir_to_target = global_position.direction_to(look_target)
-	
-	if abs(dir_to_target.x) > abs(dir_to_target.y):
-		animated_sprite.flip_h = dir_to_target.x < 0
-		animated_sprite.play("walk_right" if is_moving else "idle_right")
+	animated_sprite.flip_h = dir_to_target.x < 0
+	if is_moving:
+		animated_sprite.play("walk")
 	else:
-		animated_sprite.flip_h = false
-		if dir_to_target.y > 0:
-			animated_sprite.play("walk_down" if is_moving else "idle_down")
-		else:
-			animated_sprite.play("walk_up" if is_moving else "idle_up")
+		animated_sprite.play("idle")
 
 func update_weapon_aiming(target_pos: Vector2) -> void:
-	var weapon_holder = $WeaponHolder
-	if weapon_holder.get_child_count() > 0:
-		var weapon = weapon_holder.get_child(0)
-		weapon_holder.look_at(target_pos)
-		if weapon.has_node("AnimatedSprite2D"):
-			var weapon_sprite = weapon.get_node("AnimatedSprite2D")
-			weapon_sprite.flip_v = target_pos.x < global_position.x
+	weapon_holder.look_at(target_pos)
+	
+	if target_pos.x < global_position.x:
+		weapon_holder.scale.y = -1
+	else:
+		weapon_holder.scale.y = 1
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	if current_state == State.DEAD: return
@@ -204,64 +202,86 @@ func _on_attack_delay_timer_timeout() -> void:
 func take_damage(amount: int) -> void:
 	if current_state == State.DEAD: return
 	current_health -= amount
-	animated_sprite.modulate = Color(1, 0, 0)
-	await get_tree().create_timer(0.1).timeout
-	animated_sprite.modulate = Color(1, 1, 1)
-	if current_health <= 0 and current_state != State.DEAD:
+	
+	if current_health <= 0:
 		die()
+	else:
+		animated_sprite.modulate = Color(1, 0, 0)
+		await get_tree().create_timer(0.1).timeout
+		animated_sprite.modulate = Color(1, 1, 1)
 
 func die() -> void:
 	current_state = State.DEAD
 	velocity = Vector2.ZERO
 	attack_delay_timer.stop()
 	strafe_timer.stop()
-	
+
 	$CollisionShape2D.set_deferred("disabled", true)
 	if has_node("HurtBox/CollisionShape2D"):
 		$HurtBox/CollisionShape2D.set_deferred("disabled", true)
-		
+
 	if $WeaponHolder.get_child_count() > 0:
 		$WeaponHolder.get_child(0).visible = false
-		
-	animated_sprite.play("death")
-	await animated_sprite.animation_finished
+
+	animated_sprite.modulate = Color(1, 0, 0)
+	var tilt_amount = 0.8
+	
+	if player != null:
+		if player.global_position.x < global_position.x:
+			tilt_amount = 0.8
+		else:
+			tilt_amount = -0.8
+	
+	var tween = create_tween()
+	tween.tween_property(self, "rotation", tilt_amount, 0.2)
+	await tween.finished
+	
+	animated_sprite.modulate = Color(0.4, 0.4, 0.4) 
+	await get_tree().create_timer(0.3).timeout
+	
 	drop_loot()
 	queue_free()
 
 func drop_loot() -> void:
-	if randf() > 0.5:
+	# 1. Skill Point Logic (Placeholder for later)
+	if randf() <= drops_skill_point_chance:
+		print("Dropped a skill point! (Implement visual scene later)")
+		
+	# 2. If this enemy doesn't drop a weapon (like your Slime), stop here!
+	if drops_weapon_id == "":
+		return
+
+	# 3. Weapon or Ammo drops for Goblins, Skeletons, etc.
+	if randf() > 0.5: # 50% chance they drop their weapon/ammo bag
 		return
 		
-	var weapon_id = "ak_47"
 	var drop_scene_path: String = ""
 	var is_weapon_drop = false
-	
-	if not Global.has_weapon(weapon_id) and not Global.is_weapon_on_ground(weapon_id):
-		drop_scene_path = Global.get_weapon_scene_path(weapon_id)
+
+	if not Global.has_weapon(drops_weapon_id) and not Global.is_weapon_on_ground(drops_weapon_id):
+		drop_scene_path = Global.get_weapon_scene_path(drops_weapon_id)
 		is_weapon_drop = true
-	else:
-		drop_scene_path = "res://Scenes/weapons/ammo_pickups/ammo_pickup_ak_47.tscn"
+	elif drops_ammo_scene != null:
+		drop_scene_path = drops_ammo_scene.resource_path
+		
 	if drop_scene_path != "":
 		var pickup_scene: PackedScene = load(drop_scene_path)
 		if pickup_scene:
 			var pickup_instance = pickup_scene.instantiate()
 			pickup_instance.global_position = global_position
-			get_tree().current_scene.add_child(pickup_instance)
+			get_tree().current_scene.call_deferred("add_child", pickup_instance)
 			if is_weapon_drop:
-				Global.mark_weapon_dropped(weapon_id)
+				Global.mark_weapon_dropped(drops_weapon_id)
 
 func force_unstuck() -> void:
 	print("Enemy got stuck! Reversing direction smoothly.")
 	match current_state:
 		State.WANDERING:
 			wander_target = global_position + (global_position.direction_to(wander_target) * -50.0)
-			# Reset the timer so they have time to walk away
 			wander_timer.start(randf_range(1.5, 3.0))
 		State.SEARCHING:
-			# Give up searching immediately
 			velocity = Vector2.ZERO
 			lose_interest_timer.stop()
 			_on_lose_interest_timeout()
 		State.STRAFING:
-			# Just reverse the strafe direction perfectly so they slide backwards out of the trap
 			strafe_direction = -strafe_direction
