@@ -5,11 +5,12 @@
 
 [resource]
 script = ExtResource("2_w7w82")
-weapon_id = "ak47"
+weapon_id = "ak_47"
 bullet_scene = ExtResource("1_rh578")
-fire_rate = 0.15
+fire_rate = 0.3
 mag_size = 30
 max_ammo = 150
 infinite_ammo = false
 accurate_shots = 3
+max_spread = 10.0
 metadata/_custom_type_script = "uid://c1okr2c7dhq6c"

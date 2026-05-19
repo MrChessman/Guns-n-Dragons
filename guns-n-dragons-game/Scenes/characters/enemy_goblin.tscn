@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://diqrd3ipq2wj4"]
+
+[ext_resource type="Script" uid="uid://bit0u0ox35yhq" path="res://Scripts/character_scripts/enemy_dummy.gd" id="1_kf521"]
+[ext_resource type="Texture2D" uid="uid://dl4nqwi2jhrge" path="res://Assets/Characters/Enemies/goblin.png" id="2_kf521"]
+[ext_resource type="PackedScene" uid="uid://2gpyiqjyhep3" path="res://Scenes/weapons/ammo_pickups/ammo_pickup_ak_47.tscn" id="2_yhx0c"]
+[ext_resource type="PackedScene" uid="uid://dqm762dyhg0cq" path="res://Scenes/weapons/ak_47.tscn" id="4_3xo6w"]
+[ext_resource type="Resource" uid="uid://cx1j763i0xcrm" path="res://Scripts/weapon_script/weapon_data/enemy_weapon_stats/enemy_ak47.tres" id="5_yhx0c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhx0c"]
+atlas = ExtResource("2_kf521")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xo6w"]
+atlas = ExtResource("2_kf521")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cu4fb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yhx0c")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xo6w")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fv1pp"]
+radius = 7.0
+height = 14.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_msq7b"]
+radius = 11.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jkw2o"]
+radius = 130.0
+
+[node name="EnemyGoblin" type="CharacterBody2D" unique_id=2007932104]
+position = Vector2(0, -9)
+collision_layer = 4
+collision_mask = 195
+script = ExtResource("1_kf521")
+max_health = 6
+move_speed = null
+wander_speed = null
+preferred_distance = null
+shots_firing = 3
+drops_weapon_id = "ak_47"
+drops_ammo_scene = ExtResource("2_yhx0c")
+drops_skill_point_chance = 0.3
+drop_weapon_chance = null
+drops_ammo_chance = null
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1297792265]
+position = Vector2(0, -4)
+sprite_frames = SubResource("SpriteFrames_cu4fb")
+animation = &"walk"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1258798298]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_fv1pp")
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=2075807307]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=689794172]
+position = Vector2(0, -4)
+shape = SubResource("CapsuleShape2D_msq7b")
+debug_color = Color(0.981963, 0.0008526844, 0.99081725, 0.41960785)
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1520960477]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=1126727373]
+shape = SubResource("CircleShape2D_jkw2o")
+
+[node name="StrafeTimer" type="Timer" parent="." unique_id=1408252467]
+
+[node name="AttackDelayTimer" type="Timer" parent="." unique_id=2083728445]
+
+[node name="WeaponHolder" type="Marker2D" parent="." unique_id=955612959]
+position = Vector2(0, 5)
+
+[node name="Ak47" parent="WeaponHolder" unique_id=1996530527 instance=ExtResource("4_3xo6w")]
+position = Vector2(1, -5)
+stats = ExtResource("5_yhx0c")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="timeout" from="StrafeTimer" to="." method="_on_strafe_timer_timeout"]
+[connection signal="timeout" from="AttackDelayTimer" to="." method="_on_attack_delay_timer_timeout"]

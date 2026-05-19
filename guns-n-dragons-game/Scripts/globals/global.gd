@@ -4,7 +4,7 @@ signal weapon_unlocked_signal(weapon_id: String)
 var unlocked_weapons: Array[String] = []
 var weapon_database: Dictionary = {
 	"ak_47": "res://Scenes/weapons/ak_47.tscn",
-	"neo_frontier": "res://Scenes/weapons/pistol.tscn" 
+	"pistol": "res://Scenes/weapons/pistol.tscn" 
 }
 
 var spawned_weapons: Array[String] = []

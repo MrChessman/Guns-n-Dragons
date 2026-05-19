@@ -9,6 +9,8 @@ extends CharacterBody2D
 @export var drops_weapon_id: String = "" 
 @export var drops_ammo_scene: PackedScene 
 @export var drops_skill_point_chance: float = 0.20
+@export var drop_weapon_chance: float = 0.50
+@export var drops_ammo_chance: float = 0.50
 
 enum State {IDLE, WANDERING, STRAFING, SHOOTING, SEARCHING, DEAD}
 var current_state: State = State.IDLE
@@ -243,35 +245,36 @@ func die() -> void:
 	queue_free()
 
 func drop_loot() -> void:
-	# 1. Skill Point Logic (Placeholder for later)
+	# 1. Skill Point Logic
 	if randf() <= drops_skill_point_chance:
-		print("Dropped a skill point! (Implement visual scene later)")
+		print("Dropped a skill point!")
 		
-	# 2. If this enemy doesn't drop a weapon (like your Slime), stop here!
+	# Stop here if the enemy doesn't have a weapon assigned (like the Slime)
 	if drops_weapon_id == "":
 		return
-
-	# 3. Weapon or Ammo drops for Goblins, Skeletons, etc.
-	if randf() > 0.5: # 50% chance they drop their weapon/ammo bag
-		return
 		
-	var drop_scene_path: String = ""
-	var is_weapon_drop = false
-
-	if not Global.has_weapon(drops_weapon_id) and not Global.is_weapon_on_ground(drops_weapon_id):
-		drop_scene_path = Global.get_weapon_scene_path(drops_weapon_id)
-		is_weapon_drop = true
-	elif drops_ammo_scene != null:
-		drop_scene_path = drops_ammo_scene.resource_path
-		
-	if drop_scene_path != "":
-		var pickup_scene: PackedScene = load(drop_scene_path)
-		if pickup_scene:
-			var pickup_instance = pickup_scene.instantiate()
-			pickup_instance.global_position = global_position
-			get_tree().current_scene.call_deferred("add_child", pickup_instance)
-			if is_weapon_drop:
+	# 2. Check the current status of the weapon
+	var knows_weapon = Global.has_weapon(drops_weapon_id)
+	var weapon_on_ground = Global.is_weapon_on_ground(drops_weapon_id)
+	
+	if not knows_weapon and not weapon_on_ground:
+		# RULE A: Player doesn't have it and it's not on the ground. Roll for WEAPON.
+		if randf() <= drop_weapon_chance:
+			var weapon_path = Global.get_weapon_scene_path(drops_weapon_id)
+			if weapon_path != "":
+				spawn_drop(load(weapon_path))
 				Global.mark_weapon_dropped(drops_weapon_id)
+	else:
+		# RULE B: Player already has it OR it's already on the ground. Roll for AMMO.
+		# (This also guarantees they never get ammo if they don't have the gun!)
+		if drops_ammo_scene != null and randf() <= drops_ammo_chance:
+			spawn_drop(drops_ammo_scene)
+
+func spawn_drop(scene_to_spawn: PackedScene) -> void:
+	if scene_to_spawn:
+		var instance = scene_to_spawn.instantiate()
+		instance.global_position = global_position
+		get_tree().current_scene.call_deferred("add_child", instance)
 
 func force_unstuck() -> void:
 	print("Enemy got stuck! Reversing direction smoothly.")

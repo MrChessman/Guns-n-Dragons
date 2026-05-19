@@ -5,7 +5,6 @@ extends CanvasLayer
 @onready var max_reserve_icon: TextureRect = $PortraitBox/HBoxContainer/MaxReserveIcon
 @onready var reserve_ammo_count: Label = $PortraitBox/HBoxContainer/ReserveAmmocount
 @onready var reserve_infinity_icon: TextureRect = $PortraitBox/HBoxContainer/ReserveInfinityIcon
-
 @onready var health_bar: TextureProgressBar = $PortraitBox/HealthBar
 
 var current_weapon_connected: Weapon = null

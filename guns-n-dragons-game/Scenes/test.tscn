@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bilopoligqs74" path="res://Assets/Environment/Tilemaps/spring tilemap.png" id="5_i3aeo"]
 [ext_resource type="PackedScene" uid="uid://b3qjvf56bpcy3" path="res://Scenes/characters/enemy_slime.tscn" id="7_0c07c"]
 [ext_resource type="PackedScene" uid="uid://fbxmlnyr8wr3" path="res://Scenes/Ui/HUD.tscn" id="7_5wyu1"]
+[ext_resource type="PackedScene" uid="uid://diqrd3ipq2wj4" path="res://Scenes/characters/enemy_goblin.tscn" id="8_0c07c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5wyu1"]
 texture = ExtResource("5_i3aeo")
@@ -346,3 +347,21 @@ position = Vector2(314, 75)
 
 [node name="EnemySlime3" parent="." unique_id=2041869069 instance=ExtResource("7_0c07c")]
 position = Vector2(44, 66)
+
+[node name="EnemyGoblin" parent="." unique_id=452233999 instance=ExtResource("8_0c07c")]
+position = Vector2(878, 482)
+
+[node name="EnemyGoblin2" parent="." unique_id=1032208025 instance=ExtResource("8_0c07c")]
+position = Vector2(875, 167)
+
+[node name="EnemyGoblin3" parent="." unique_id=1213332491 instance=ExtResource("8_0c07c")]
+position = Vector2(663, 279)
+
+[node name="EnemyGoblin4" parent="." unique_id=992036728 instance=ExtResource("8_0c07c")]
+position = Vector2(660, 483)
+
+[node name="EnemyGoblin5" parent="." unique_id=651608756 instance=ExtResource("8_0c07c")]
+position = Vector2(1000, 323)
+
+[node name="EnemyGoblin6" parent="." unique_id=917275317 instance=ExtResource("8_0c07c")]
+position = Vector2(679, 104)

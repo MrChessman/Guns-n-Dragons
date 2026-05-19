@@ -3,13 +3,10 @@
 [ext_resource type="Script" uid="uid://boja2xoodsxx8" path="res://Scripts/ui_scripts/HUD.gd" id="1_mdyde"]
 [ext_resource type="FontFile" uid="uid://ch4lh3mupukb0" path="res://Assets/UI/Fonts/ImpactfulBits.ttf" id="2_4ir27"]
 [ext_resource type="Texture2D" uid="uid://ctartplrmuefb" path="res://Assets/Weapons/guns.png" id="2_e8xii"]
+[ext_resource type="Texture2D" uid="uid://c3lkngsrtsxio" path="res://Assets/UI/selector/HUD.png" id="2_kc5n5"]
 [ext_resource type="Texture2D" uid="uid://cpslbjudci61m" path="res://Assets/Weapons/ammo_sprites/Amo3.png" id="4_e8xii"]
 [ext_resource type="Texture2D" uid="uid://bjjkn58ek1ax8" path="res://Assets/Extras/infinity.png" id="6_v3tq4"]
 [ext_resource type="Texture2D" uid="uid://dk876j1shsg2h" path="res://Assets/UI/selector/fantasy.png" id="7_kc5n5"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kc5n5"]
-atlas = ExtResource("7_kc5n5")
-region = Rect2(1, 3, 79, 27)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1jhah"]
 atlas = ExtResource("7_kc5n5")
@@ -27,28 +24,29 @@ offset_left = 29.0
 offset_top = 23.0
 offset_right = 656.0
 offset_bottom = 234.0
-texture = SubResource("AtlasTexture_kc5n5")
+texture = ExtResource("2_kc5n5")
+stretch_mode = 5
 
 [node name="HealthBar" type="TextureProgressBar" parent="PortraitBox" unique_id=1166704080]
 layout_mode = 0
-offset_left = 210.0
-offset_top = 21.0
-offset_right = 615.0
-offset_bottom = 65.0
+offset_left = 163.0
+offset_top = 56.0
+offset_right = 611.0
+offset_bottom = 121.0
 nine_patch_stretch = true
 texture_progress = SubResource("AtlasTexture_1jhah")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PortraitBox" unique_id=171448464]
 layout_mode = 0
-offset_left = 137.0
-offset_top = 130.0
-offset_right = 574.0
-offset_bottom = 183.0
+offset_left = 130.0
+offset_top = 119.0
+offset_right = 567.0
+offset_bottom = 172.0
 size_flags_vertical = 4
 alignment = 1
 
 [node name="BulletIcon" type="TextureRect" parent="PortraitBox/HBoxContainer" unique_id=690535334]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_vertical = 4
 texture = SubResource("AtlasTexture_mdyde")
@@ -59,17 +57,17 @@ stretch_mode = 5
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_4ir27")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 30
 text = "30"
 
 [node name="CurrentInfinityIcon" type="TextureRect" parent="PortraitBox/HBoxContainer" unique_id=472684680]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 texture = ExtResource("6_v3tq4")
 stretch_mode = 5
 
 [node name="MaxReserveIcon" type="TextureRect" parent="PortraitBox/HBoxContainer" unique_id=446537647]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 texture = ExtResource("4_e8xii")
 expand_mode = 1
@@ -79,11 +77,11 @@ stretch_mode = 5
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_4ir27")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 30
 text = "150 / 150"
 
 [node name="ReserveInfinityIcon" type="TextureRect" parent="PortraitBox/HBoxContainer" unique_id=1554889757]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 texture = ExtResource("6_v3tq4")
 stretch_mode = 5

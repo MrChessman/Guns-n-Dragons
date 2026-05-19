@@ -9,8 +9,10 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.name == "Player" or body.has_method("add_weapon"):
 		for w in body.unlocked_weapons:
-			if w.weapon_id == target_weapon_id:
-				if w.reserve_ammo < w.max_ammo:
-					w.reserve_ammo = min(w.reserve_ammo + ammo_amount, w.max_ammo)
+			if w.stats.weapon_id == target_weapon_id:
+				if w.stats.reserve_ammo < w.stats.max_ammo:
+					w.stats.reserve_ammo = min(w.stats.reserve_ammo + ammo_amount, w.stats.max_ammo)
+					# Tell the HUD to update if this is the currently held weapon!
+					w.ammo_changed.emit(w.current_ammo, w.stats.reserve_ammo, w.stats.max_ammo, w.stats.infinite_ammo)
 					queue_free() 
 				return

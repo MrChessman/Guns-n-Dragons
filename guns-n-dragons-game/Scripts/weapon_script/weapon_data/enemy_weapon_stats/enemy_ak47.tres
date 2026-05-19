@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponStats" format=3 uid="uid://cx1j763i0xcrm"]
+
+[ext_resource type="PackedScene" uid="uid://d38xl74hc13tt" path="res://Scenes/bullets/enemy_bullet.tscn" id="1_4dpv5"]
+[ext_resource type="Script" uid="uid://c1okr2c7dhq6c" path="res://Scripts/weapon_script/weapon_stats.gd" id="2_xs642"]
+
+[resource]
+script = ExtResource("2_xs642")
+weapon_id = "ak_47"
+bullet_scene = ExtResource("1_4dpv5")
+accurate_shots = 1
+spread_per_shot = 10.0
+max_spread = 20.0
+metadata/_custom_type_script = "uid://c1okr2c7dhq6c"
