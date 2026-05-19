@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bxa0s4oirjrw3" path="res://Scripts/character_scripts/player.gd" id="1_0r5da"]
 [ext_resource type="Texture2D" uid="uid://8x02dij5js0x" path="res://Assets/Characters/Leon/dodge.png" id="2_8liwr"]
 [ext_resource type="Texture2D" uid="uid://c8ol25enc1xsl" path="res://Assets/Characters/Leon/characternew.png" id="2_kvnrr"]
-[ext_resource type="PackedScene" uid="uid://djhit5cu7ixea" path="res://Scenes/weapons/pistol.tscn" id="7_twm3q"]
+[ext_resource type="PackedScene" uid="uid://kafudqb5s0jk" path="res://Scenes/weapons/sniper.tscn" id="4_kvnrr"]
 [ext_resource type="Texture2D" uid="uid://cn6216jvjgg47" path="res://Assets/reload_proto.png" id="9_8liwr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0r5da"]
@@ -172,7 +172,7 @@ zoom = Vector2(5, 5)
 [node name="WeaponHolder" type="Marker2D" parent="." unique_id=428306102]
 position = Vector2(1, 6)
 
-[node name="Pistol" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("7_twm3q")]
+[node name="Sniper" parent="WeaponHolder" unique_id=1996530527 instance=ExtResource("4_kvnrr")]
 
 [node name="ReloadIcon" type="Sprite2D" parent="." unique_id=1115593255]
 visible = false

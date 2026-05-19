@@ -5,7 +5,8 @@ var unlocked_weapons: Array[String] = []
 var weapon_database: Dictionary = {
 	"ak_47": "res://Scenes/weapons/ak_47.tscn",
 	"pistol": "res://Scenes/weapons/pistol.tscn",
-	"shotgun": "res://Scenes/weapons/shotgun.tscn"
+	"shotgun": "res://Scenes/weapons/shotgun.tscn",
+	"sniper": "res://Scenes/weapons/sniper.tscn"
 }
 
 var spawned_weapons: Array[String] = []

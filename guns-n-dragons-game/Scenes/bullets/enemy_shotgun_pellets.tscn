@@ -40,12 +40,12 @@ speed = 150.0
 is_enemy_bullet = true
 
 [node name="light_glow" type="Sprite2D" parent="." unique_id=1238834396]
-modulate = Color(0.95686275, 0.05490196, 0, 0.6156863)
+modulate = Color(1, 0, 0, 0.972549)
 scale = Vector2(0.99999994, 0.99999994)
 texture = ExtResource("2_81vf7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1135736380]
-modulate = Color(1, 0.2627451, 0.49411765, 1)
+modulate = Color(1, 0.2627451, 0.36862746, 1)
 sprite_frames = SubResource("SpriteFrames_q8315")
 animation = &"shoot"
 autoplay = "shoot"

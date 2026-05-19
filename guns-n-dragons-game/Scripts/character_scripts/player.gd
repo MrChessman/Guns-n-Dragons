@@ -3,6 +3,15 @@ extends CharacterBody2D
 @export var speed: float = 200.0
 @export var min_aim_distance: float = 40.0
 @export var max_health: int = 5
+
+@export_category("Camera Settings")
+@export var default_zoom: Vector2 = Vector2(5.0, 5.0)
+@export var sniper_zoom: Vector2 = Vector2(3.5, 3.5)
+@export var zoom_speed: float = 0.4
+
+@onready var camera: Camera2D = $Camera2D
+var zoom_tween: Tween
+
 var current_health: int
 @export var dodge_speed: float = 600.0
 @export var dodge_duration: float = 0.25
@@ -23,19 +32,30 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 
 var current_weapon: Weapon = null
 var unlocked_weapons: Array[Weapon] = []
+var equip_system: WeaponEquipSystem = null
 
 signal health_changed(current, max)
 signal weapon_switched(new_weapon: Weapon)
 
 func _ready() -> void:
+	# Initialize equip system
+	equip_system = WeaponEquipSystem.new()
+	add_child(equip_system)
+	equip_system.weapon_equipped.connect(_on_weapon_equipped)
+	equip_system.equip_finished.connect(_on_equip_finished)
+	
 	Global.weapon_unlocked_signal.connect(_on_weapon_unlocked)
 	current_health = max_health
 	health_changed.emit(current_health, max_health)
 	if weapon_holder.get_child_count() > 0:
-		current_weapon = weapon_holder.get_child(0) as Weapon
-		if current_weapon != null:
-			unlocked_weapons.append(current_weapon)
-			weapon_switched.emit(current_weapon)
+		var initial_weapon: Weapon = weapon_holder.get_child(0) as Weapon
+		if initial_weapon != null:
+			unlocked_weapons.append(initial_weapon)
+			# Link weapon to equip system
+			initial_weapon.set_equip_system(equip_system)
+			# Equip the starting weapon through equip_system (applies initial zoom + state)
+			await get_tree().process_frame
+			equip_system.request_equip(initial_weapon, initial_weapon.stats.weapon_id, initial_weapon.stats)
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
@@ -96,12 +116,9 @@ func update_animations() -> void:
 
 func switch_weapon(index: int) -> void:
 	if index >= 0 and index < unlocked_weapons.size():
-		for w in unlocked_weapons:
-			w.visible = false
-
-		current_weapon = unlocked_weapons[index]
-		current_weapon.visible = true
-		weapon_switched.emit(current_weapon)
+		var new_weapon: Weapon = unlocked_weapons[index]
+		# Request equip through equip_system
+		equip_system.request_equip(new_weapon, new_weapon.stats.weapon_id, new_weapon.stats)
 
 func add_weapon(new_weapon_node: Node) -> void:
 	var weapon_file_path = new_weapon_node.scene_file_path
@@ -124,6 +141,24 @@ func add_weapon(new_weapon_node: Node) -> void:
 	unlocked_weapons.append(clean_weapon)
 	switch_weapon(unlocked_weapons.size() - 1)
 
+func _on_weapon_equipped(weapon: Node, weapon_id: String) -> void:
+	# Called when a weapon is equipped
+	current_weapon = weapon as Weapon
+	for w in unlocked_weapons:
+		w.visible = false
+	current_weapon.visible = true
+	weapon_switched.emit(current_weapon)
+	
+	# Apply camera zoom based on weapon
+	if weapon_id == "sniper":
+		apply_camera_zoom(sniper_zoom)
+	else:
+		apply_camera_zoom(default_zoom)
+
+func _on_equip_finished(weapon_id: String) -> void:
+	# Called when equip cooldown finishes
+	pass  # Equip is complete, weapon can now fire
+
 func _on_weapon_unlocked(weapon_id: String) -> void:
 	var scene_path: String = Global.get_weapon_scene_path(weapon_id)
 		
@@ -133,6 +168,9 @@ func _on_weapon_unlocked(weapon_id: String) -> void:
 		clean_weapon.rotation = 0
 		weapon_holder.add_child(clean_weapon)
 		unlocked_weapons.append(clean_weapon)
+		# Link new weapon to equip system
+		if equip_system != null:
+			clean_weapon.set_equip_system(equip_system)
 		switch_weapon(unlocked_weapons.size() - 1)
 
 func take_damage(amount: int) -> void:
@@ -192,3 +230,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			switch_weapon(2)
 		elif event.keycode == KEY_4:
 			switch_weapon(3)
+
+func apply_camera_zoom(target_zoom: Vector2) -> void:
+	# If a zoom is currently happening, stop it so we can start the new one smoothly
+	if zoom_tween and zoom_tween.is_valid():
+		zoom_tween.kill()
+		
+	# Create a new tween (smooth transition) for the camera
+	zoom_tween = create_tween()
+	zoom_tween.tween_property(camera, "zoom", target_zoom, zoom_speed).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)

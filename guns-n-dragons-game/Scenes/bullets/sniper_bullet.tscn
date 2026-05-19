@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bc66wp2ulq6bb"]
+
+[ext_resource type="Script" uid="uid://bpx56cvftayi1" path="res://Scripts/bullet_scripts/bullet.gd" id="1_abyyh"]
+[ext_resource type="Texture2D" uid="uid://kw3nykrbwcmo" path="res://Assets/Weapons/bullets/bullets.png" id="2_1ctnm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnxnv"]
+atlas = ExtResource("2_1ctnm")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q8315"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mnxnv")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 12.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mqy6c"]
+radius = 4.0
+height = 22.857141
+
+[node name="Bullet" type="Area2D" unique_id=1138917344]
+z_index = 1
+collision_layer = 8
+collision_mask = 132
+script = ExtResource("1_abyyh")
+speed = 1000.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1135736380]
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_q8315")
+animation = &"shoot"
+autoplay = "shoot"
+frame_progress = 0.49517617
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2095335650]
+position = Vector2(-0.18821335, -0.79990673)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_mqy6c")
+
+[node name="Timer" type="Timer" parent="." unique_id=1237187840]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

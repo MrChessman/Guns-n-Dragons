@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponStats" format=3 uid="uid://4jecsu4icmmm"]
+
+[ext_resource type="PackedScene" uid="uid://b0b72hhplf6c2" path="res://Scenes/bullets/enemy_sniper_bullet.tscn" id="1_aeabr"]
+[ext_resource type="Script" uid="uid://c1okr2c7dhq6c" path="res://Scripts/weapon_script/weapon_stats.gd" id="2_ksmdy"]
+
+[resource]
+script = ExtResource("2_ksmdy")
+weapon_id = "sniper"
+bullet_scene = ExtResource("1_aeabr")
+damage = 5
+fire_rate = 0.3
+accurate_shots = 1
+spread_per_shot = 0.0
+max_spread = 10.0
+metadata/_custom_type_script = "uid://c1okr2c7dhq6c"

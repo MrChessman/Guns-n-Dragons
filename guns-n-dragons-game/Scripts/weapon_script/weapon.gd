@@ -1,26 +1,33 @@
 extends Node2D
 
 class_name Weapon
+
 signal ammo_changed(current: int, reserve: int, max: int, is_inf: bool)
 signal reload_started
 signal reload_finished
+
 @export var stats: WeaponStats
 
-#State
+# State
 var current_ammo: int = 0
+var reserve_ammo: int = 0  # LOCAL tracking (not from stats)
 var can_shoot: bool = true
 var is_reloading: bool = false
 var consecutive_shots: int = 0
 var current_spread: float = 0.0
-@onready var area = get_node_or_null("Area2D")
-@onready var inspect_ui = get_node_or_null("InspectUI")
-#References
+
+# References
+@onready var area: Node = get_node_or_null("Area2D")
+@onready var inspect_ui: Node = get_node_or_null("InspectUI")
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var muzzle: Marker2D = $Muzzle
 var is_player_near: bool = false
 var player_ref: Node2D = null
 
-#Timers
+# Modular system references
+var equip_system: WeaponEquipSystem = null
+
+# Timers
 @onready var fire_rate_timer: Timer = $FireRateTimer
 @onready var reload_timer: Timer = $ReloadTimer
 @onready var recoil_reset_timer: Timer = $RecoilResetTimer
@@ -28,18 +35,35 @@ var player_ref: Node2D = null
 func _ready() -> void:
 	if get_parent() != null and get_parent().name != "WeaponHolder":
 		Global.mark_weapon_dropped(stats.weapon_id)
-	current_ammo = stats.mag_size
 	
+	# Initialize ammo from stats
+	current_ammo = stats.mag_size
+	reserve_ammo = stats.reserve_ammo
+	
+	# Store weapon ID as metadata for equip_system to identify
+	set_meta("weapon_id", stats.weapon_id)
+	
+	# Connect timers
 	fire_rate_timer.timeout.connect(_on_fire_rate_timeout)
 	reload_timer.timeout.connect(_on_reload_timeout)
 	recoil_reset_timer.timeout.connect(_on_recoil_reset_timeout)
 	
-	 # Turn on pick-up detection if the gun has the Area2D and InspectUI attached
+	# Turn on pick-up detection if the gun has the Area2D and InspectUI attached
 	if area != null:
 		area.body_entered.connect(_on_body_entered)
 		area.body_exited.connect(_on_body_exited)
+
+# Called by weapon_equip_system to set a reference
+func set_equip_system(system: WeaponEquipSystem) -> void:
+	equip_system = system
+	print("[Weapon: %s] Equip system assigned" % stats.weapon_id)
 		
 func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
+	# Check equip cooldown
+	if equip_system != null and not equip_system.can_fire():
+		print("[Weapon: %s] Cannot fire — equip cooldown active" % stats.weapon_id)
+		return
+	
 	if not can_shoot or is_reloading:
 		return
 	
@@ -47,10 +71,14 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 		reload()
 		return
 	
+	# Notify equip system that firing started
+	if equip_system != null:
+		equip_system.on_weapon_fire_start()
+	
 	can_shoot = false
 	if not stats.infinite_ammo:
 		current_ammo -= 1
-		ammo_changed.emit(current_ammo, stats.reserve_ammo, stats.max_ammo, stats.infinite_ammo)
+		ammo_changed.emit(current_ammo, reserve_ammo, stats.max_ammo, stats.infinite_ammo)
 	
 	var flash = get_node_or_null("Muzzle/Flash")
 	if flash:
@@ -112,15 +140,27 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 	fire_rate_timer.start(stats.fire_rate)
 
 func reload() -> void:
-	if is_reloading or current_ammo == stats.mag_size or (stats.reserve_ammo <= 0 and not stats.infinite_ammo):
+	if is_reloading or current_ammo == stats.mag_size or (reserve_ammo <= 0 and not stats.infinite_ammo):
+		return
+	
+	# Only allow reload if weapon is currently equipped (for active reload requirement)
+	if equip_system != null and equip_system.get_current_weapon() != self:
+		print("[Weapon: %s] Cannot reload — weapon not currently equipped" % stats.weapon_id)
 		return
 	
 	is_reloading = true
 	reload_started.emit()
 	reload_timer.start(stats.reload_time)
+	
+	# Notify equip system that reload started
+	if equip_system != null:
+		equip_system.on_weapon_reload_start()
 
 func _on_fire_rate_timeout() -> void:
 	can_shoot = true
+	# Notify equip system that firing ended
+	if equip_system != null:
+		equip_system.on_weapon_fire_end()
 
 func _on_reload_timeout() -> void:
 	var needed_ammo = stats.mag_size - current_ammo
@@ -128,13 +168,17 @@ func _on_reload_timeout() -> void:
 	if stats.infinite_ammo:
 		current_ammo = stats.mag_size
 	else:
-		var ammo_to_add = min(needed_ammo, stats.reserve_ammo)
+		var ammo_to_add = min(needed_ammo, reserve_ammo)
 		current_ammo += ammo_to_add
-		stats.reserve_ammo -= ammo_to_add
+		reserve_ammo -= ammo_to_add
 	
 	is_reloading = false
 	reload_finished.emit()
-	ammo_changed.emit(current_ammo, stats.reserve_ammo, stats.max_ammo, stats.infinite_ammo)
+	ammo_changed.emit(current_ammo, reserve_ammo, stats.max_ammo, stats.infinite_ammo)
+	
+	# Notify equip system that reload finished
+	if equip_system != null:
+		equip_system.on_weapon_reload_end()
 
 func _on_recoil_reset_timeout() -> void:
 	consecutive_shots = 0
@@ -163,3 +207,24 @@ func _unhandled_input(event: InputEvent) -> void:
 			Global.unlock_weapon(stats.weapon_id)
 			Global.mark_weapon_picked_up(stats.weapon_id)
 			queue_free()
+
+# Called by weapon_equip_system to get current ammo state for persistence
+func get_ammo_state() -> Dictionary:
+	return {
+		"current_mag": current_ammo,
+		"reserve": reserve_ammo
+	}
+
+# Called by weapon_equip_system to restore ammo state from persistence
+func set_ammo_state(mag: int, reserve: int) -> void:
+	current_ammo = mag
+	reserve_ammo = reserve
+	ammo_changed.emit(current_ammo, reserve_ammo, stats.max_ammo, stats.infinite_ammo)
+	print("[Weapon: %s] Ammo state restored: mag=%d, reserve=%d" % [stats.weapon_id, mag, reserve])
+
+# Called by weapon_equip_system when switching away — cancel any active reload
+func cancel_reload() -> void:
+	if is_reloading:
+		is_reloading = false
+		reload_timer.stop()
+		print("[Weapon: %s] Reload cancelled due to weapon switch" % stats.weapon_id)

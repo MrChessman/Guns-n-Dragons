@@ -32,7 +32,7 @@ speed = 150.0
 is_enemy_bullet = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1135736380]
-modulate = Color(1, 0.4509804, 0.6509804, 0.972549)
+modulate = Color(1, 0, 0, 0.972549)
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_q8315")
 animation = &"shoot"
