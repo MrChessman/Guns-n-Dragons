@@ -3,6 +3,22 @@
 [ext_resource type="Script" uid="uid://bss2un3f4ftqx" path="res://Scripts/weapon_script/weapon.gd" id="1_48ina"]
 [ext_resource type="Resource" uid="uid://cqyupumrujmbd" path="res://Scripts/weapon_script/weapon_data/player_weapon_stats/pistol_stats.tres" id="2_fb6wy"]
 [ext_resource type="Texture2D" uid="uid://cved7il4fe0j" path="res://Assets/Weapons/guns/pistol.png" id="3_fb6wy"]
+[ext_resource type="Texture2D" uid="uid://imt8ll8e2e5v" path="res://Assets/Weapons/muzzle/muzzle.png" id="4_48ina"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wuwmp"]
+atlas = ExtResource("4_48ina")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2buje"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wuwmp")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Pistol" type="Node2D" unique_id=1079545419]
 scale = Vector2(1.2, 1.2)
@@ -15,7 +31,14 @@ scale = Vector2(0.35, 0.35)
 texture = ExtResource("3_fb6wy")
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=2135537636]
-position = Vector2(11, -3)
+position = Vector2(10.833333, -2.5)
+
+[node name="Flash" type="AnimatedSprite2D" parent="Muzzle" unique_id=1208085345]
+visible = false
+position = Vector2(2.5, 0)
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_2buje")
+frame_progress = 1.0
 
 [node name="FireRateTimer" type="Timer" parent="." unique_id=969520464]
 one_shot = true

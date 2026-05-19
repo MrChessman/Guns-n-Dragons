@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bss2un3f4ftqx" path="res://Scripts/weapon_script/weapon.gd" id="1_wps3p"]
 [ext_resource type="Resource" uid="uid://caro0esvty3f2" path="res://Scripts/weapon_script/weapon_data/player_weapon_stats/ak47_stats.tres" id="2_ggpnf"]
 [ext_resource type="Texture2D" uid="uid://djb2dv3bujmrd" path="res://Assets/Weapons/guns/ak-47.png" id="3_ggpnf"]
+[ext_resource type="Texture2D" uid="uid://imt8ll8e2e5v" path="res://Assets/Weapons/muzzle/muzzle.png" id="4_0ns44"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0ns44"]
 atlas = ExtResource("3_ggpnf")
@@ -21,6 +22,42 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_af6rb"]
 size = Vector2(54.5, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hotep"]
+atlas = ExtResource("4_0ns44")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bjke"]
+atlas = ExtResource("4_0ns44")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kyndr"]
+atlas = ExtResource("4_0ns44")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y15jv"]
+atlas = ExtResource("4_0ns44")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nwjjo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hotep")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bjke")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kyndr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y15jv")
+}],
+"loop": false,
+"name": &"default",
+"speed": 15.0
+}]
 
 [node name="Ak47" type="Node2D" unique_id=1996530527]
 scale = Vector2(0.5, 0.5)
@@ -42,6 +79,14 @@ debug_color = Color(1.2995303e-06, 0.65138793, 0.037722956, 0.41960785)
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=129442430]
 position = Vector2(33, -1)
+
+[node name="Flash" type="AnimatedSprite2D" parent="Muzzle" unique_id=288796559]
+visible = false
+position = Vector2(11.209091, -0.13144705)
+scale = Vector2(0.8, 0.8)
+sprite_frames = SubResource("SpriteFrames_nwjjo")
+frame = 3
+frame_progress = 1.0
 
 [node name="InspectUI" type="Node2D" parent="." unique_id=986577541]
 visible = false

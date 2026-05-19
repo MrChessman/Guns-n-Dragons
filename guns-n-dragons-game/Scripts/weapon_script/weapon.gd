@@ -52,9 +52,14 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 		current_ammo -= 1
 		ammo_changed.emit(current_ammo, stats.reserve_ammo, stats.max_ammo, stats.infinite_ammo)
 	
-	# We removed the animation lines here!
-	# (Later we will add muzzle flash visibility code here)
-	
+	var flash = get_node_or_null("Muzzle/Flash")
+	if flash:
+		flash.visible = true
+		flash.stop() # Reset the animation if we shoot really fast
+		flash.play("default")
+		# Tell the flash to hide itself automatically as soon as the animation is done
+		if not flash.animation_finished.is_connected(flash.hide):
+			flash.animation_finished.connect(flash.hide)
 	var spread_angle_rad = 0.0
 	
 	if consecutive_shots >= stats.accurate_shots:

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bss2un3f4ftqx" path="res://Scripts/weapon_script/weapon.gd" id="1_dc80q"]
 [ext_resource type="Resource" uid="uid://c7w7y6j5k1gis" path="res://Scripts/weapon_script/weapon_data/player_weapon_stats/shotgun_stats.tres" id="2_dc80q"]
 [ext_resource type="Texture2D" uid="uid://c5xxsfxk8n4yl" path="res://Assets/Weapons/guns/shotgun.png" id="3_dc80q"]
+[ext_resource type="Texture2D" uid="uid://imt8ll8e2e5v" path="res://Assets/Weapons/muzzle/muzzle.png" id="4_slojl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dc80q"]
 atlas = ExtResource("3_dc80q")
@@ -21,6 +22,21 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_af6rb"]
 size = Vector2(54.5, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dia4y"]
+atlas = ExtResource("4_slojl")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ameo2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dia4y")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Shotgun" type="Node2D" unique_id=1996530527]
 scale = Vector2(0.5, 0.5)
@@ -42,6 +58,12 @@ debug_color = Color(1.2995303e-06, 0.65138793, 0.037722956, 0.41960785)
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=129442430]
 position = Vector2(36, -2)
+
+[node name="Flash" type="AnimatedSprite2D" parent="Muzzle" unique_id=1992373744]
+visible = false
+position = Vector2(26.983414, 1.4306555)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_ameo2")
 
 [node name="InspectUI" type="Node2D" parent="." unique_id=986577541]
 visible = false
