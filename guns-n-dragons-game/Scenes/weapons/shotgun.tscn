@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cv523y77duab6"]
+
+[ext_resource type="Script" uid="uid://bss2un3f4ftqx" path="res://Scripts/weapon_script/weapon.gd" id="1_dc80q"]
+[ext_resource type="Resource" uid="uid://c7w7y6j5k1gis" path="res://Scripts/weapon_script/weapon_data/player_weapon_stats/shotgun_stats.tres" id="2_dc80q"]
+[ext_resource type="Texture2D" uid="uid://c5xxsfxk8n4yl" path="res://Assets/Weapons/guns/shotgun.png" id="3_dc80q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dc80q"]
+atlas = ExtResource("3_dc80q")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wps3p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dc80q")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_af6rb"]
+size = Vector2(54.5, 24)
+
+[node name="Shotgun" type="Node2D" unique_id=1996530527]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_dc80q")
+stats = ExtResource("2_dc80q")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=865244904]
+position = Vector2(7, 1)
+sprite_frames = SubResource("SpriteFrames_wps3p")
+animation = &"idle"
+
+[node name="Area2D" type="Area2D" parent="." unique_id=694470494]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=581672462]
+position = Vector2(5.75, 2)
+shape = SubResource("RectangleShape2D_af6rb")
+debug_color = Color(1.2995303e-06, 0.65138793, 0.037722956, 0.41960785)
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=129442430]
+position = Vector2(36, -2)
+
+[node name="InspectUI" type="Node2D" parent="." unique_id=986577541]
+visible = false
+
+[node name="Label" type="Label" parent="InspectUI" unique_id=1006964958]
+offset_left = -22.0
+offset_top = -42.0
+offset_right = 32.0
+offset_bottom = -19.0
+text = "Shotgun"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FireRateTimer" type="Timer" parent="." unique_id=1033617296]
+one_shot = true
+
+[node name="ReloadTimer" type="Timer" parent="." unique_id=995302599]
+one_shot = true
+
+[node name="RecoilResetTimer" type="Timer" parent="." unique_id=378257264]
+one_shot = true

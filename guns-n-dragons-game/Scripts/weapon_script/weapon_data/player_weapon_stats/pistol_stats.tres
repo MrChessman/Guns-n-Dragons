@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="WeaponStats" format=3 uid="uid://cqyupumrujmbd"]
 
-[ext_resource type="PackedScene" uid="uid://bic2ocaa4q3fr" path="res://Scenes/bullets/bullet.tscn" id="1_mnv16"]
+[ext_resource type="PackedScene" uid="uid://bic2ocaa4q3fr" path="res://Scenes/bullets/pistol_bullet.tscn" id="1_mnv16"]
 [ext_resource type="Script" uid="uid://c1okr2c7dhq6c" path="res://Scripts/weapon_script/weapon_stats.gd" id="1_vjm4l"]
 
 [resource]

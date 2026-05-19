@@ -12,13 +12,35 @@ region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3xo6w"]
 atlas = ExtResource("2_kf521")
-region = Rect2(0, 0, 32, 32)
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_prq8o"]
+atlas = ExtResource("2_kf521")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_krl7j"]
+atlas = ExtResource("2_kf521")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vuxw8"]
+atlas = ExtResource("2_kf521")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d612c"]
+atlas = ExtResource("2_kf521")
+region = Rect2(64, 32, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_cu4fb"]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_yhx0c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xo6w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_prq8o")
 }],
 "loop": true,
 "name": &"idle",
@@ -26,11 +48,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3xo6w")
+"texture": SubResource("AtlasTexture_krl7j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vuxw8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d612c")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 10.0
+"speed": 7.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fv1pp"]
@@ -49,21 +77,17 @@ collision_layer = 4
 collision_mask = 195
 script = ExtResource("1_kf521")
 max_health = 6
-move_speed = null
-wander_speed = null
-preferred_distance = null
 shots_firing = 3
 drops_weapon_id = "ak_47"
 drops_ammo_scene = ExtResource("2_yhx0c")
 drops_skill_point_chance = 0.3
-drop_weapon_chance = null
-drops_ammo_chance = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1297792265]
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_cu4fb")
-animation = &"walk"
+animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.11394032
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1258798298]
 position = Vector2(0, 2)

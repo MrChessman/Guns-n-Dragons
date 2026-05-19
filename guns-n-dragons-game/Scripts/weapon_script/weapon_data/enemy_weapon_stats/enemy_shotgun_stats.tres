@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponStats" format=3 uid="uid://dtm0glq05b0s7"]
+
+[ext_resource type="PackedScene" uid="uid://bbjuxq5fk1ptu" path="res://Scenes/bullets/enemy_shotgun_pellets.tscn" id="1_q7el5"]
+[ext_resource type="Script" uid="uid://c1okr2c7dhq6c" path="res://Scripts/weapon_script/weapon_stats.gd" id="2_gqxds"]
+
+[resource]
+script = ExtResource("2_gqxds")
+weapon_id = "shotgun"
+bullet_scene = ExtResource("1_q7el5")
+fire_rate = 1.0
+mag_size = 10
+max_ammo = 50
+reserve_ammo = 50
+infinite_ammo = false
+reload_time = 2.0
+pellet_count = 3
+accurate_shots = 1
+spread_per_shot = 10.0
+max_spread = 40.0
+recoil_reset_time = 1.0
+metadata/_custom_type_script = "uid://c1okr2c7dhq6c"

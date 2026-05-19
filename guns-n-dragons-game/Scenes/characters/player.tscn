@@ -153,7 +153,9 @@ collision_mask = 197
 script = ExtResource("1_0r5da")
 speed = 100.0
 min_aim_distance = 45.0
+max_health = 10
 dodge_speed = 300.0
+dodge_cooldown = 3.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=704547909]
 sprite_frames = SubResource("SpriteFrames_tf8qx")
@@ -170,8 +172,7 @@ zoom = Vector2(5, 5)
 [node name="WeaponHolder" type="Marker2D" parent="." unique_id=428306102]
 position = Vector2(1, 6)
 
-[node name="NeoFrontier" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("7_twm3q")]
-position = Vector2(1, 0)
+[node name="Pistol" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("7_twm3q")]
 
 [node name="ReloadIcon" type="Sprite2D" parent="." unique_id=1115593255]
 visible = false

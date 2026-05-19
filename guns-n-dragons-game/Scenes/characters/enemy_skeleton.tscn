@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://6jg38cft04qw"]
+
+[ext_resource type="Script" uid="uid://bit0u0ox35yhq" path="res://Scripts/character_scripts/enemy_dummy.gd" id="1_l4j3a"]
+[ext_resource type="PackedScene" uid="uid://bjg6gxfdy7uig" path="res://Scenes/weapons/ammo_pickups/ammo_pickup_shotgun.tscn" id="2_cqbgi"]
+[ext_resource type="Texture2D" uid="uid://c3hh35p3yvnqn" path="res://Assets/Characters/Enemies/skeleton.png" id="2_l4j3a"]
+[ext_resource type="PackedScene" uid="uid://cv523y77duab6" path="res://Scenes/weapons/shotgun.tscn" id="3_l4j3a"]
+[ext_resource type="Resource" uid="uid://dtm0glq05b0s7" path="res://Scripts/weapon_script/weapon_data/enemy_weapon_stats/enemy_shotgun_stats.tres" id="4_cqbgi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqbgi"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q5fnu"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgpy3"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ti87b"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yopxb"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_homan"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4d66q"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etk4m"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0erth"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxjs2"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cy0cq"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nkhi0"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5urw"]
+atlas = ExtResource("2_l4j3a")
+region = Rect2(160, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cu4fb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqbgi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q5fnu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tgpy3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ti87b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yopxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_homan")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4d66q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_etk4m")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0erth")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qxjs2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cy0cq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nkhi0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5urw")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fv1pp"]
+radius = 7.0
+height = 14.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_msq7b"]
+radius = 14.0
+height = 28.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jkw2o"]
+radius = 130.0
+
+[node name="EnemySkeleton" type="CharacterBody2D" unique_id=2007932104]
+position = Vector2(0, -9)
+collision_layer = 4
+collision_mask = 195
+script = ExtResource("1_l4j3a")
+max_health = 4
+preferred_distance = 20.0
+drops_weapon_id = "shotgun"
+drops_ammo_scene = ExtResource("2_cqbgi")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1297792265]
+position = Vector2(0, -4)
+sprite_frames = SubResource("SpriteFrames_cu4fb")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.76495224
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1258798298]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_fv1pp")
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=2075807307]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=689794172]
+shape = SubResource("CapsuleShape2D_msq7b")
+debug_color = Color(0.981963, 0.0008526844, 0.99081725, 0.41960785)
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1520960477]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=1126727373]
+shape = SubResource("CircleShape2D_jkw2o")
+
+[node name="StrafeTimer" type="Timer" parent="." unique_id=1408252467]
+
+[node name="AttackDelayTimer" type="Timer" parent="." unique_id=2083728445]
+
+[node name="WeaponHolder" type="Marker2D" parent="." unique_id=955612959]
+position = Vector2(0, 5)
+
+[node name="Shotgun" parent="WeaponHolder" unique_id=1079545419 instance=ExtResource("3_l4j3a")]
+position = Vector2(1, -4)
+stats = ExtResource("4_cqbgi")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="timeout" from="StrafeTimer" to="." method="_on_strafe_timer_timeout"]
+[connection signal="timeout" from="AttackDelayTimer" to="." method="_on_attack_delay_timer_timeout"]

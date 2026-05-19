@@ -196,7 +196,7 @@ func _on_attack_delay_timer_timeout() -> void:
 		if current_health > 0 and current_state == State.SHOOTING:
 			if player != null:
 				current_state = State.STRAFING
-				attack_delay_timer.start(randf_range(2.0, 3.0))
+				attack_delay_timer.start(randf_range(4.0, 5.0))
 			else:
 				current_state = State.SEARCHING
 				lose_interest_timer.start(2.0)
@@ -226,13 +226,13 @@ func die() -> void:
 		$WeaponHolder.get_child(0).visible = false
 
 	animated_sprite.modulate = Color(1, 0, 0)
-	var tilt_amount = 0.8
+	var tilt_amount = 1.5
 	
 	if player != null:
 		if player.global_position.x < global_position.x:
-			tilt_amount = 0.8
+			tilt_amount = 1.5
 		else:
-			tilt_amount = -0.8
+			tilt_amount = -1.5
 	
 	var tween = create_tween()
 	tween.tween_property(self, "rotation", tilt_amount, 0.2)

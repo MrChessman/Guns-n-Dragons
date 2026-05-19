@@ -66,10 +66,6 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 	recoil_reset_timer.start(stats.recoil_reset_time)
 	
 	if stats.bullet_scene:
-		var bullet = stats.bullet_scene.instantiate()
-		bullet.global_position = muzzle.global_position
-		
-		# --- NEW TARGETING LOGIC ---
 		var aim_pos: Vector2
 		if target_pos != Vector2.ZERO:
 			aim_pos = target_pos
@@ -77,13 +73,24 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 			aim_pos = get_global_mouse_position()
 			
 		var base_aim_direction = (aim_pos - muzzle.global_position).normalized()
-		var final_aim_direction = base_aim_direction.rotated(spread_angle_rad)
-		
-		bullet.direction = final_aim_direction
-		bullet.global_rotation = final_aim_direction.angle()
-		bullet.damage = stats.damage
 		var main_level = get_tree().current_scene
-		main_level.add_child(bullet)
+		
+		# Loop to fire multiple pellets
+		for i in range(stats.pellet_count):
+			var bullet = stats.bullet_scene.instantiate()
+			bullet.global_position = muzzle.global_position
+			
+			# Add random spread to each pellet if it's a shotgun
+			var pellet_spread = spread_angle_rad
+			if stats.pellet_count > 1:
+				pellet_spread += deg_to_rad(randf_range(-stats.max_spread, stats.max_spread))
+				
+			var final_aim_direction = base_aim_direction.rotated(pellet_spread)
+			
+			bullet.direction = final_aim_direction
+			bullet.global_rotation = final_aim_direction.angle()
+			bullet.damage = stats.damage
+			main_level.add_child(bullet)
 	
 	fire_rate_timer.start(stats.fire_rate)
 

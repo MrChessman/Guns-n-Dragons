@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b3qjvf56bpcy3" path="res://Scenes/characters/enemy_slime.tscn" id="7_0c07c"]
 [ext_resource type="PackedScene" uid="uid://fbxmlnyr8wr3" path="res://Scenes/Ui/HUD.tscn" id="7_5wyu1"]
 [ext_resource type="PackedScene" uid="uid://diqrd3ipq2wj4" path="res://Scenes/characters/enemy_goblin.tscn" id="8_0c07c"]
+[ext_resource type="PackedScene" uid="uid://6jg38cft04qw" path="res://Scenes/characters/enemy_skeleton.tscn" id="9_2cgwh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5wyu1"]
 texture = ExtResource("5_i3aeo")
@@ -365,3 +366,42 @@ position = Vector2(1000, 323)
 
 [node name="EnemyGoblin6" parent="." unique_id=917275317 instance=ExtResource("8_0c07c")]
 position = Vector2(679, 104)
+
+[node name="EnemySlime4" parent="." unique_id=303712454 instance=ExtResource("9_2cgwh")]
+position = Vector2(148, 563)
+
+[node name="EnemySlime5" parent="." unique_id=1968233849 instance=ExtResource("9_2cgwh")]
+position = Vector2(270, 652)
+
+[node name="EnemySlime6" parent="." unique_id=490466065 instance=ExtResource("9_2cgwh")]
+position = Vector2(330, 513)
+
+[node name="EnemySlime7" parent="." unique_id=113971116 instance=ExtResource("9_2cgwh")]
+position = Vector2(37, 475)
+
+[node name="EnemySkeleton" parent="." unique_id=1733177180 instance=ExtResource("9_2cgwh")]
+position = Vector2(47, 749)
+
+[node name="EnemySkeleton2" parent="." unique_id=1073877068 instance=ExtResource("9_2cgwh")]
+position = Vector2(-14, 610)
+
+[node name="EnemySkeleton3" parent="." unique_id=943745110 instance=ExtResource("9_2cgwh")]
+position = Vector2(254, 817)
+
+[node name="EnemySkeleton4" parent="." unique_id=1632132080 instance=ExtResource("9_2cgwh")]
+position = Vector2(514, 785)
+
+[node name="EnemySlime8" parent="." unique_id=770983813 instance=ExtResource("7_0c07c")]
+position = Vector2(183, 50)
+
+[node name="EnemySlime9" parent="." unique_id=1327547458 instance=ExtResource("7_0c07c")]
+position = Vector2(19, 176)
+
+[node name="EnemySlime10" parent="." unique_id=735670911 instance=ExtResource("7_0c07c")]
+position = Vector2(264, 274)
+
+[node name="EnemySlime11" parent="." unique_id=921649409 instance=ExtResource("7_0c07c")]
+position = Vector2(428, 30)
+
+[node name="EnemyGoblin7" parent="." unique_id=630335428 instance=ExtResource("8_0c07c")]
+position = Vector2(559, 227)
