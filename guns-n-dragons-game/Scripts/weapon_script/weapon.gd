@@ -95,7 +95,19 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 			bullet.direction = final_aim_direction
 			bullet.global_rotation = final_aim_direction.angle()
 			bullet.damage = stats.damage
+			
+			# NEW: Tell the bullet how much knockback it carries!
+			if "knockback_power" in stats:
+				bullet.knockback_power = stats.knockback_power
+			
 			main_level.add_child(bullet)
+			
+		# NEW: Apply recoil knockback to the shooter
+		if "knockback_power" in stats and stats.knockback_power > 0:
+			var shooter = get_parent().get_parent() # Gets the Player or Enemy wielding the gun
+			if shooter.has_method("apply_knockback"):
+				var recoil_direction = -base_aim_direction # Push backwards from the aim
+				shooter.apply_knockback(recoil_direction * stats.knockback_power)
 	
 	fire_rate_timer.start(stats.fire_rate)
 

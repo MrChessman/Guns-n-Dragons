@@ -18,4 +18,5 @@ accurate_shots = 1
 spread_per_shot = 10.0
 max_spread = 40.0
 recoil_reset_time = 1.0
+knockback_power = 400.0
 metadata/_custom_type_script = "uid://c1okr2c7dhq6c"

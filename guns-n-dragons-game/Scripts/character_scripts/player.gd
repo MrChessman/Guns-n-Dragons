@@ -13,6 +13,7 @@ var can_dodge: bool = true
 var dodge_direction: Vector2 = Vector2.ZERO
 var is_invincible: bool = false
 var is_dead: bool = false
+var knockback_velocity: Vector2 = Vector2.ZERO
 @onready var leon: AnimatedSprite2D = $AnimatedSprite2D
 @onready var weapon_holder: Marker2D = $WeaponHolder
 @onready var reload_icon: Sprite2D = $ReloadIcon
@@ -46,6 +47,10 @@ func _physics_process(delta: float) -> void:
 		var input_dir := Input.get_vector("move_left","move_right","move_up","move_down")
 		velocity = input_dir * speed
 		
+	# Apply knockback force and decay it smoothly
+	velocity += knockback_velocity
+	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, 1500.0 * delta)
+		
 	move_and_slide()
 	
 	if not is_dodging:
@@ -68,6 +73,9 @@ func _physics_process(delta: float) -> void:
 					current_weapon.shoot()
 			if Input.is_action_just_pressed("reload"):
 				current_weapon.reload()
+
+func apply_knockback(force: Vector2) -> void:
+	knockback_velocity = force
 
 func aim_weapon(mouse_pos: Vector2) -> void:
 	weapon_holder.look_at(mouse_pos)

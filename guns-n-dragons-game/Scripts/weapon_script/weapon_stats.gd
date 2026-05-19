@@ -21,3 +21,6 @@ class_name WeaponStats
 @export var spread_per_shot: float = 5.0
 @export var max_spread: float = 15.0
 @export var recoil_reset_time: float = 0.4
+
+@export_category("Combat Effects")
+@export var knockback_power: float = 0.0

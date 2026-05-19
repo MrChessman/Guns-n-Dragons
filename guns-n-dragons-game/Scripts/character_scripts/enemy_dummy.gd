@@ -23,6 +23,7 @@ var wander_target: Vector2 = Vector2.ZERO
 var locked_aim_position: Vector2 = Vector2.ZERO
 var stuck_timer: float = 0.0
 var last_stuck_position: Vector2 = Vector2.ZERO
+var knockback_velocity: Vector2 = Vector2.ZERO
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var strafe_timer: Timer = $StrafeTimer
@@ -86,7 +87,14 @@ func _physics_process(delta: float) -> void:
 			update_animations(true, last_known_position)
 			update_weapon_aiming(last_known_position)
 			
+	# Apply knockback force and decay it smoothly
+	velocity += knockback_velocity
+	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, 1500.0 * delta)
+			
 	move_and_slide()
+
+func apply_knockback(force: Vector2) -> void:
+	knockback_velocity = force
 
 func wander_movement() -> void:
 	var dist = global_position.distance_to(wander_target)

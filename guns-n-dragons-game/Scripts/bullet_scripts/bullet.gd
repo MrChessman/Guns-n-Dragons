@@ -3,6 +3,7 @@ extends Area2D
 @export var speed: float = 400.0
 @export var damage: int = 1
 @export var is_enemy_bullet: bool = false
+@export var knockback_power: float = 0.0
 
 var direction: Vector2 = Vector2.RIGHT
 
@@ -22,5 +23,8 @@ func _on_body_entered(body: Node2D) -> void:
 		if "is_invincible" in body and body.is_invincible:
 			return 
 	if body.has_method("take_damage"):
+		if knockback_power > 0.0 and body.has_method("apply_knockback"):
+			# Push them in the same direction the bullet is traveling
+			body.apply_knockback(direction * knockback_power)
 		body.take_damage(damage)
 	queue_free()

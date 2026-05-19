@@ -16,4 +16,5 @@ reload_time = 2.0
 pellet_count = 3
 accurate_shots = 1
 max_spread = 25.0
+knockback_power = 200.0
 metadata/_custom_type_script = "uid://c1okr2c7dhq6c"
