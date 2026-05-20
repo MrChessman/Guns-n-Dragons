@@ -74,7 +74,7 @@ radius = 130.0
 [node name="EnemyGoblin" type="CharacterBody2D" unique_id=2007932104]
 position = Vector2(0, -9)
 collision_layer = 4
-collision_mask = 195
+collision_mask = 451
 script = ExtResource("1_kf521")
 max_health = 6
 shots_firing = 3

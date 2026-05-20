@@ -23,17 +23,14 @@ func _process(delta: float) -> void:
 			state_timers.erase(state_name)
 # Request a state change
 func enter_state(new_state: State, duration: float = 0.0) -> bool:
-	if new_state == current_state:
-		return false  # Already in this state
-	
 	var old_state: State = current_state
 	current_state = new_state
 	
 	if duration > 0:
 		state_timers[State.keys()[new_state]] = duration
 	
-	print("[WeaponStateMachine] %s → %s" % [State.keys()[old_state], State.keys()[new_state]])
-	state_changed.emit(new_state, old_state)
+	if old_state != new_state:
+		state_changed.emit(new_state, old_state)
 	return true
 # Check if we can perform an action
 func can_perform_action(action: State) -> bool:
@@ -43,7 +40,7 @@ func can_perform_action(action: State) -> bool:
 		State.RELOADING:
 			return current_state in [State.IDLE, State.FIRING]
 		State.EQUIPPING:
-			return current_state in [State.IDLE, State.UNEQUIPPING]
+			return true
 		_:
 			return true
 # Get current state as readable string

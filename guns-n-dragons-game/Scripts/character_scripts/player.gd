@@ -168,9 +168,11 @@ func _on_weapon_unlocked(weapon_id: String) -> void:
 		clean_weapon.rotation = 0
 		weapon_holder.add_child(clean_weapon)
 		unlocked_weapons.append(clean_weapon)
-		# Link new weapon to equip system
+		# Link new weapon to equip system BEFORE switching
 		if equip_system != null:
 			clean_weapon.set_equip_system(equip_system)
+		# Switch to the newly unlocked weapon after a brief delay to ensure state sync
+		await get_tree().process_frame
 		switch_weapon(unlocked_weapons.size() - 1)
 
 func take_damage(amount: int) -> void:
@@ -235,7 +237,7 @@ func apply_camera_zoom(target_zoom: Vector2) -> void:
 	# If a zoom is currently happening, stop it so we can start the new one smoothly
 	if zoom_tween and zoom_tween.is_valid():
 		zoom_tween.kill()
-		
+	
 	# Create a new tween (smooth transition) for the camera
 	zoom_tween = create_tween()
 	zoom_tween.tween_property(camera, "zoom", target_zoom, zoom_speed).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)

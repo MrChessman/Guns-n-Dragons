@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://fbxmlnyr8wr3" path="res://Scenes/Ui/HUD.tscn" id="7_5wyu1"]
 [ext_resource type="PackedScene" uid="uid://diqrd3ipq2wj4" path="res://Scenes/characters/enemy_goblin.tscn" id="8_0c07c"]
 [ext_resource type="PackedScene" uid="uid://6jg38cft04qw" path="res://Scenes/characters/enemy_skeleton.tscn" id="9_2cgwh"]
-[ext_resource type="PackedScene" uid="uid://cjnh0wy8iatcf" path="res://Scenes/characters/enemy_witch.tscn" id="10_iaow0"]
+[ext_resource type="PackedScene" uid="uid://btf2pm7mcjbfb" path="res://Scenes/characters/enemy_witch.tscn" id="10_iaow0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5wyu1"]
 texture = ExtResource("5_i3aeo")
@@ -21,9 +21,11 @@ texture = ExtResource("5_i3aeo")
 0:1/0 = 0
 1:1/0 = 0
 2:1/0 = 0
+3:1/next_alternative_id = 3
 3:1/0 = 0
 3:1/0/terrain_set = 0
 3:1/0/terrain = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:1/0/terrains_peering_bit/right_side = 0
 3:1/0/terrains_peering_bit/bottom_right_corner = 0
 3:1/0/terrains_peering_bit/bottom_side = 0
@@ -299,7 +301,7 @@ texture = ExtResource("5_i3aeo")
 2:3/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_0c07c"]
-physics_layer_0/collision_layer = 128
+physics_layer_0/collision_layer = 256
 physics_layer_0/collision_mask = 0
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "LandMass"
@@ -399,7 +401,7 @@ position = Vector2(264, 274)
 position = Vector2(428, 30)
 
 [node name="EnemyGoblin7" parent="." unique_id=630335428 instance=ExtResource("8_0c07c")]
-position = Vector2(559, 227)
+position = Vector2(629, 267)
 
 [node name="EnemySlime12" parent="." unique_id=1164211691 instance=ExtResource("7_0c07c")]
 position = Vector2(96, 930)

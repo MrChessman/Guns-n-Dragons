@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://cjnh0wy8iatcf"]
+[gd_scene format=3 uid="uid://btf2pm7mcjbfb"]
 
 [ext_resource type="Script" uid="uid://bit0u0ox35yhq" path="res://Scripts/character_scripts/enemy_dummy.gd" id="1_icnl3"]
-[ext_resource type="PackedScene" uid="uid://2gpyiqjyhep3" path="res://Scenes/weapons/ammo_pickups/ammo_pickup_ak_47.tscn" id="2_ckmsw"]
+[ext_resource type="PackedScene" uid="uid://cnoum02ds8ppg" path="res://Scenes/weapons/ammo_pickups/ammo_pickup_sniper.tscn" id="2_icnl3"]
 [ext_resource type="Texture2D" uid="uid://cdx0dxwjhv7yg" path="res://Assets/Characters/Enemies/witch.png" id="3_icnl3"]
 [ext_resource type="PackedScene" uid="uid://kafudqb5s0jk" path="res://Scenes/weapons/sniper.tscn" id="5_sniper_scene"]
 [ext_resource type="Resource" uid="uid://4jecsu4icmmm" path="res://Scripts/weapon_script/weapon_data/enemy_weapon_stats/enemy_sniper.tres" id="6_sniper"]
@@ -100,14 +100,21 @@ radius = 11.0
 radius = 181.04419
 
 [node name="EnemyWitch" type="CharacterBody2D" unique_id=2007932104]
+z_index = 10
 position = Vector2(0, -9)
 collision_layer = 4
-collision_mask = 195
+collision_mask = 67
 script = ExtResource("1_icnl3")
+max_health = 10
 move_speed = 100.0
+preferred_distance = 150.0
 drops_weapon_id = "sniper"
-drops_ammo_scene = ExtResource("2_ckmsw")
-drops_skill_point_chance = 0.3
+drops_ammo_scene = ExtResource("2_icnl3")
+drops_skill_point_chance = 0.4
+drop_weapon_chance = 1.0
+drops_ammo_chance = 1.0
+is_flying = true
+attack_delay_max = 5.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1297792265]
 position = Vector2(0, -4)

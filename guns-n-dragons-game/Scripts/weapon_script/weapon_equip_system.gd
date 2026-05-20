@@ -20,15 +20,11 @@ func _ready() -> void:
 	# Add child nodes so they process
 	add_child(weapon_state_manager)
 	add_child(weapon_state_machine)
-	
-	# Connect to state changes for debug
-	weapon_state_machine.state_changed.connect(_on_state_changed)
-	print("[WeaponEquipSystem] Initialized and ready")
+
 # Request to equip a weapon
 func request_equip(new_weapon: Node, weapon_id: String, weapon_stats: WeaponStats) -> bool:
 	# Can't equip while already equipping
 	if not weapon_state_machine.can_perform_action(WeaponStateMachine.State.EQUIPPING):
-		print("[WeaponEquipSystem] Cannot equip — weapon busy in state: %s" % weapon_state_machine.get_state_name())
 		return false
 	
 	# Save old weapon state
@@ -91,11 +87,6 @@ func get_current_weapon_id() -> String:
 	return current_weapon_id
 # Debug
 func _on_state_changed(new_state: WeaponStateMachine.State, old_state: WeaponStateMachine.State) -> void:
-	var state_name: String = WeaponStateMachine.State.keys()[new_state]
-	print("[WeaponEquipSystem] State changed: %s → %s (weapon: %s)" % [WeaponStateMachine.State.keys()[old_state], state_name, current_weapon_id])
+	pass
 func debug_print_status() -> void:
-	print("\n=== WEAPON EQUIP SYSTEM STATUS ===")
-	print("  Current Weapon: %s" % current_weapon_id)
-	print("  Current State: %s" % weapon_state_machine.get_state_name())
-	weapon_state_manager.debug_print_all_states()
-	print("===================================\n")
+	pass

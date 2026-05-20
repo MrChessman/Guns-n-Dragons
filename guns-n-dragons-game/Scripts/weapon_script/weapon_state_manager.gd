@@ -10,14 +10,11 @@ func save_weapon_state(weapon_id: String, current_mag: int, reserve_ammo: int) -
 		"current_mag": current_mag,
 		"reserve": reserve_ammo
 	}
-	print("[WeaponStateManager] Saved state for %s: mag=%d, reserve=%d" % [weapon_id, current_mag, reserve_ammo])
 # Called when a weapon is equipped — restore its previous ammo
 func restore_weapon_state(weapon_id: String, weapon_stats: WeaponStats) -> Dictionary:
 	# If we have saved state, return it
 	if weapon_id in weapon_ammo_state:
-		var state: Dictionary = weapon_ammo_state[weapon_id]
-		print("[WeaponStateManager] Restored state for %s: mag=%d, reserve=%d" % [weapon_id, state["current_mag"], state["reserve"]])
-		return state
+		return weapon_ammo_state[weapon_id]
 	
 	# First time equipping this weapon — use defaults from WeaponStats
 	var default_state: Dictionary = {
@@ -25,7 +22,6 @@ func restore_weapon_state(weapon_id: String, weapon_stats: WeaponStats) -> Dicti
 		"reserve": weapon_stats.reserve_ammo
 	}
 	weapon_ammo_state[weapon_id] = default_state
-	print("[WeaponStateManager] First equip of %s: initialized to defaults" % weapon_id)
 	return default_state
 # Check if a weapon needs reload
 func is_magazine_empty(weapon_id: String) -> bool:

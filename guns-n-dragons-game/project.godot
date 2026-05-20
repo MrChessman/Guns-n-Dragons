@@ -97,6 +97,7 @@ grab={
 2d_physics/layer_6="Loot"
 2d_physics/layer_7="Water"
 2d_physics/layer_8="PropsLayer"
+2d_physics/layer_9="wall_layer"
 
 [physics]
 

@@ -5,12 +5,20 @@ extends CharacterBody2D
 @export var wander_speed: float = 30.0 
 @export var preferred_distance: float = 100.0
 @export var shots_firing: int = 1
+
 @export_category("Loot Drops")
 @export var drops_weapon_id: String = "" 
 @export var drops_ammo_scene: PackedScene 
 @export var drops_skill_point_chance: float = 0.20
 @export var drop_weapon_chance: float = 0.50
 @export var drops_ammo_chance: float = 0.50
+
+@export_category("Movement Settings")
+@export var is_flying: bool = false 
+
+@export_category("Attack Settings")
+@export var attack_delay_min: float = 2.0
+@export var attack_delay_max: float = 4.0
 
 enum State {IDLE, WANDERING, STRAFING, SHOOTING, SEARCHING, DEAD}
 var current_state: State = State.IDLE
@@ -44,6 +52,13 @@ func _ready() -> void:
 	wander_timer.timeout.connect(_on_wander_timer_timeout)
 	add_child(wander_timer)
 	wander_timer.start(randf_range(1.0, 3.0))
+	
+	if is_flying:
+		# Flying enemies ignore Layer 1 (Walls) and Layer 8 (Trees)
+		# We set the mask to only collide with the Player (Layer 2) 
+		# and potentially a dedicated Boundary Layer if you add one later.
+		collision_mask &= ~1   # Remove Layer 1 (Walls)
+		collision_mask &= ~128 # Remove Layer 8 (Trees)
 
 func _physics_process(delta: float) -> void:
 	if current_state == State.DEAD:
@@ -156,7 +171,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		lose_interest_timer.stop()
 		if attack_delay_timer.is_stopped():
 			strafe_timer.start(0.5)
-			attack_delay_timer.start(randf_range(2.0, 3.0))
+			attack_delay_timer.start(randf_range(attack_delay_min, attack_delay_max))
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	if current_state == State.DEAD: return
@@ -204,7 +219,7 @@ func _on_attack_delay_timer_timeout() -> void:
 		if current_health > 0 and current_state == State.SHOOTING:
 			if player != null:
 				current_state = State.STRAFING
-				attack_delay_timer.start(randf_range(4.0, 5.0))
+				attack_delay_timer.start(randf_range(attack_delay_min + 1.0, attack_delay_max + 1.0))
 			else:
 				current_state = State.SEARCHING
 				lose_interest_timer.start(2.0)
@@ -281,8 +296,36 @@ func drop_loot() -> void:
 func spawn_drop(scene_to_spawn: PackedScene) -> void:
 	if scene_to_spawn:
 		var instance = scene_to_spawn.instantiate()
-		instance.global_position = global_position
+		# Use our new function to find a safe spot instead of dropping it directly inside walls
+		instance.global_position = get_safe_drop_position(global_position)
 		get_tree().current_scene.call_deferred("add_child", instance)
+
+func get_safe_drop_position(start_pos: Vector2) -> Vector2:
+	# Access Godot's physics engine
+	var space_state = get_world_2d().direct_space_state
+	var params = PhysicsPointQueryParameters2D.new()
+	params.collision_mask = 193
+	
+	var current_pos = start_pos
+	var radius = 16.0
+	var angle = 0.0
+	
+	# Try up to 50 times in a growing spiral
+	for i in range(50):
+		params.position = current_pos
+		var results = space_state.intersect_point(params)
+		
+		# If the results array is empty, nothing is blocking this spot! It's safe!
+		if results.is_empty():
+			return current_pos
+			
+		# Otherwise, move slightly outward in a circle and check again
+		angle += PI / 4.0 # Rotate 45 degrees
+		radius += 4.0     # Move 4 pixels further out
+		current_pos = start_pos + Vector2(cos(angle), sin(angle)) * radius
+		
+	# Fallback if no safe spot is found after 50 tries (very rare)
+	return start_pos
 
 func force_unstuck() -> void:
 	print("Enemy got stuck! Reversing direction smoothly.")

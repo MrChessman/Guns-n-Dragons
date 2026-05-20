@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cnoum02ds8ppg"]
+
+[ext_resource type="Script" uid="uid://syg8gvyiny33" path="res://Scripts/weapon_script/ammo_pickups/ammo_pickup.gd" id="1_2nttx"]
+[ext_resource type="Texture2D" uid="uid://ds0xur84cfeyf" path="res://Assets/Weapons/ammo_sprites/Amo6.png" id="2_2nttx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xfjga"]
+size = Vector2(80.00001, 80.00001)
+
+[node name="AmmoPickupAk47" type="Area2D" unique_id=745727352]
+scale = Vector2(0.5, 0.5)
+collision_layer = 32
+collision_mask = 3
+script = ExtResource("1_2nttx")
+ammo_amount = 10
+target_weapon_id = "sniper"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=895067]
+texture = ExtResource("2_2nttx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1494718093]
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_xfjga")
+debug_color = Color(0, 0.64140224, 0.3357815, 0.41960785)

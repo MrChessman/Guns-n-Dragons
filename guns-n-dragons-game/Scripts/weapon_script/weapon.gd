@@ -56,12 +56,10 @@ func _ready() -> void:
 # Called by weapon_equip_system to set a reference
 func set_equip_system(system: WeaponEquipSystem) -> void:
 	equip_system = system
-	print("[Weapon: %s] Equip system assigned" % stats.weapon_id)
-		
+
 func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 	# Check equip cooldown
 	if equip_system != null and not equip_system.can_fire():
-		print("[Weapon: %s] Cannot fire — equip cooldown active" % stats.weapon_id)
 		return
 	
 	if not can_shoot or is_reloading:
@@ -124,7 +122,7 @@ func shoot(target_pos: Vector2 = Vector2.ZERO) -> void:
 			bullet.global_rotation = final_aim_direction.angle()
 			bullet.damage = stats.damage
 			
-			# NEW: Tell the bullet how much knockback it carries!
+			# NEW: Tell the bullet hodw much knockback it carries!
 			if "knockback_power" in stats:
 				bullet.knockback_power = stats.knockback_power
 			
@@ -145,7 +143,6 @@ func reload() -> void:
 	
 	# Only allow reload if weapon is currently equipped (for active reload requirement)
 	if equip_system != null and equip_system.get_current_weapon() != self:
-		print("[Weapon: %s] Cannot reload — weapon not currently equipped" % stats.weapon_id)
 		return
 	
 	is_reloading = true
@@ -220,11 +217,9 @@ func set_ammo_state(mag: int, reserve: int) -> void:
 	current_ammo = mag
 	reserve_ammo = reserve
 	ammo_changed.emit(current_ammo, reserve_ammo, stats.max_ammo, stats.infinite_ammo)
-	print("[Weapon: %s] Ammo state restored: mag=%d, reserve=%d" % [stats.weapon_id, mag, reserve])
 
 # Called by weapon_equip_system when switching away — cancel any active reload
 func cancel_reload() -> void:
 	if is_reloading:
 		is_reloading = false
 		reload_timer.stop()
-		print("[Weapon: %s] Reload cancelled due to weapon switch" % stats.weapon_id)
