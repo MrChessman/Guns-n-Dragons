@@ -12,6 +12,7 @@ fire_rate = 1.0
 mag_size = 5
 max_ammo = 20
 reserve_ammo = 10
+infinite_ammo = false
 accurate_shots = 1
 spread_per_shot = 0.0
 max_spread = 1.0

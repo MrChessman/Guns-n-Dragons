@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://fbxmlnyr8wr3" path="res://Scenes/Ui/HUD.tscn" id="7_5wyu1"]
 [ext_resource type="PackedScene" uid="uid://diqrd3ipq2wj4" path="res://Scenes/characters/enemy_goblin.tscn" id="8_0c07c"]
 [ext_resource type="PackedScene" uid="uid://6jg38cft04qw" path="res://Scenes/characters/enemy_skeleton.tscn" id="9_2cgwh"]
+[ext_resource type="PackedScene" uid="uid://cjnh0wy8iatcf" path="res://Scenes/characters/enemy_witch.tscn" id="10_iaow0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5wyu1"]
 texture = ExtResource("5_i3aeo")
@@ -346,9 +347,6 @@ position = Vector2(173, 215)
 [node name="EnemySlime2" parent="." unique_id=436231557 instance=ExtResource("7_0c07c")]
 position = Vector2(314, 75)
 
-[node name="EnemySlime3" parent="." unique_id=2041869069 instance=ExtResource("7_0c07c")]
-position = Vector2(44, 66)
-
 [node name="EnemyGoblin" parent="." unique_id=452233999 instance=ExtResource("8_0c07c")]
 position = Vector2(878, 482)
 
@@ -391,9 +389,6 @@ position = Vector2(254, 817)
 [node name="EnemySkeleton4" parent="." unique_id=1632132080 instance=ExtResource("9_2cgwh")]
 position = Vector2(514, 785)
 
-[node name="EnemySlime8" parent="." unique_id=770983813 instance=ExtResource("7_0c07c")]
-position = Vector2(183, 50)
-
 [node name="EnemySlime9" parent="." unique_id=1327547458 instance=ExtResource("7_0c07c")]
 position = Vector2(19, 176)
 
@@ -405,3 +400,48 @@ position = Vector2(428, 30)
 
 [node name="EnemyGoblin7" parent="." unique_id=630335428 instance=ExtResource("8_0c07c")]
 position = Vector2(559, 227)
+
+[node name="EnemySlime12" parent="." unique_id=1164211691 instance=ExtResource("7_0c07c")]
+position = Vector2(96, 930)
+
+[node name="EnemySkeleton5" parent="." unique_id=1947030579 instance=ExtResource("9_2cgwh")]
+position = Vector2(28, 1090)
+
+[node name="EnemyGoblin8" parent="." unique_id=1286931252 instance=ExtResource("8_0c07c")]
+position = Vector2(364, 1015)
+
+[node name="EnemySkeleton6" parent="." unique_id=773843547 instance=ExtResource("9_2cgwh")]
+position = Vector2(184, 1065)
+
+[node name="EnemySlime13" parent="." unique_id=832162619 instance=ExtResource("7_0c07c")]
+position = Vector2(525, 1152)
+
+[node name="EnemyGoblin9" parent="." unique_id=454529856 instance=ExtResource("8_0c07c")]
+position = Vector2(630, 882)
+
+[node name="EnemySkeleton7" parent="." unique_id=1376974685 instance=ExtResource("9_2cgwh")]
+position = Vector2(647, 629)
+
+[node name="EnemyWitch" parent="." unique_id=1045732464 instance=ExtResource("10_iaow0")]
+position = Vector2(1318, 677)
+
+[node name="EnemyWitch2" parent="." unique_id=2091848276 instance=ExtResource("10_iaow0")]
+position = Vector2(1102, 812)
+
+[node name="EnemyWitch3" parent="." unique_id=60454185 instance=ExtResource("10_iaow0")]
+position = Vector2(1322, 432)
+
+[node name="EnemyWitch4" parent="." unique_id=1180590611 instance=ExtResource("10_iaow0")]
+position = Vector2(910, 647)
+
+[node name="EnemyWitch5" parent="." unique_id=1067848776 instance=ExtResource("10_iaow0")]
+position = Vector2(824, 885)
+
+[node name="EnemyWitch6" parent="." unique_id=838707665 instance=ExtResource("10_iaow0")]
+position = Vector2(888, 1093)
+
+[node name="EnemyWitch7" parent="." unique_id=590360486 instance=ExtResource("10_iaow0")]
+position = Vector2(1015, 1275)
+
+[node name="EnemyWitch8" parent="." unique_id=1659841743 instance=ExtResource("10_iaow0")]
+position = Vector2(112, 31)

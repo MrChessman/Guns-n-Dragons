@@ -7,7 +7,7 @@
 script = ExtResource("2_w7w82")
 weapon_id = "ak_47"
 bullet_scene = ExtResource("1_6em6u")
-fire_rate = 0.3
+fire_rate = 0.1
 mag_size = 30
 max_ammo = 150
 infinite_ammo = false
