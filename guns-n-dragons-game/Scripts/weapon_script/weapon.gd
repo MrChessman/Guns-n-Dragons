@@ -182,14 +182,14 @@ func _on_recoil_reset_timeout() -> void:
 	current_spread = 0.0
 
 func _on_body_entered(body: Node2D) -> void:
-	if get_parent().name != "WeaponHolder" and body.has_method("add_weapon"):
+	if get_parent() != null and get_parent().name != "WeaponHolder" and body.name == "Player":
 		is_player_near = true
 		player_ref = body
 		if inspect_ui != null:
 			inspect_ui.visible = true
 
 func _on_body_exited(body: Node2D) -> void:
-	if body.has_method("add_weapon"):
+	if body.name == "Player":
 		is_player_near = false
 		player_ref = null
 		if inspect_ui != null:

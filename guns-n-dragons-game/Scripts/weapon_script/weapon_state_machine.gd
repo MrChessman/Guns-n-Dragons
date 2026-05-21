@@ -48,4 +48,4 @@ func get_state_name() -> String:
 	return State.keys()[current_state]
 # Debug print
 func debug_print_state() -> void:
-	print("[WeaponStateMachine] Current: %s | Timers: %s" % [get_state_name(), state_timers])
+	pass

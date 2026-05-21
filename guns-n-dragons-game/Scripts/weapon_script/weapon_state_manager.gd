@@ -30,8 +30,4 @@ func is_magazine_empty(weapon_id: String) -> bool:
 	return false
 # Debug: print all weapon states
 func debug_print_all_states() -> void:
-	print("\n=== WEAPON AMMO STATES ===")
-	for weapon_id: String in weapon_ammo_state:
-		var state: Dictionary = weapon_ammo_state[weapon_id]
-		print("  %s: mag=%d, reserve=%d" % [weapon_id, state["current_mag"], state["reserve"]])
-	print("=========================\n")
+	pass

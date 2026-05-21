@@ -85,3 +85,11 @@ custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 texture = ExtResource("6_v3tq4")
 stretch_mode = 5
+
+[node name="Label" type="Label" parent="." unique_id=845000215]
+offset_left = 86.0
+offset_top = 213.0
+offset_right = 135.0
+offset_bottom = 262.0
+text = "nigger
+"

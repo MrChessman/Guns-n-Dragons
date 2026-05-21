@@ -7,7 +7,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.name == "Player" or body.has_method("add_weapon"):
+	if body.name == "Player":
 		for w in body.unlocked_weapons:
 			if w.stats.weapon_id == target_weapon_id:
 				# Check if weapon uses local reserve_ammo (new system)

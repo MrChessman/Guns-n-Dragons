@@ -22,7 +22,7 @@ animations = [{
 radius = 4.0
 height = 22.857141
 
-[node name="Bullet2" type="Area2D" unique_id=1138917344]
+[node name="Bullet" type="Area2D" unique_id=1138917344]
 z_index = 1
 collision_layer = 8
 collision_mask = 4

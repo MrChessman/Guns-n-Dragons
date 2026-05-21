@@ -304,7 +304,8 @@ func get_safe_drop_position(start_pos: Vector2) -> Vector2:
 	# Access Godot's physics engine
 	var space_state = get_world_2d().direct_space_state
 	var params = PhysicsPointQueryParameters2D.new()
-	params.collision_mask = 193
+	# Check Environment (1) + Water (64) + Props (128) + Walls (256) = 449
+	params.collision_mask = 449
 	
 	var current_pos = start_pos
 	var radius = 16.0

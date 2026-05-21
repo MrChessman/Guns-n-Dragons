@@ -120,27 +120,6 @@ func switch_weapon(index: int) -> void:
 		# Request equip through equip_system
 		equip_system.request_equip(new_weapon, new_weapon.stats.weapon_id, new_weapon.stats)
 
-func add_weapon(new_weapon_node: Node) -> void:
-	var weapon_file_path = new_weapon_node.scene_file_path
-	var raw_weapon_name = new_weapon_node.name
-
-	for w in unlocked_weapons:
-		if w.scene_file_path == weapon_file_path:
-			print("We already have a ", raw_weapon_name, " - Destroying duplicate!")
-			new_weapon_node.queue_free()
-			return 
-			
-	var clean_weapon_scene = load(weapon_file_path) as PackedScene
-	var clean_weapon = clean_weapon_scene.instantiate() as Weapon
-	clean_weapon.bullet_scene = load("res://Scenes/bullets/bullet.tscn")
-	clean_weapon.infinite_ammo = false
-	weapon_holder.add_child(clean_weapon)
-	clean_weapon.position = Vector2.ZERO
-	clean_weapon.rotation = 0
-	new_weapon_node.queue_free()
-	unlocked_weapons.append(clean_weapon)
-	switch_weapon(unlocked_weapons.size() - 1)
-
 func _on_weapon_equipped(weapon: Node, weapon_id: String) -> void:
 	# Called when a weapon is equipped
 	current_weapon = weapon as Weapon
@@ -149,29 +128,39 @@ func _on_weapon_equipped(weapon: Node, weapon_id: String) -> void:
 	current_weapon.visible = true
 	weapon_switched.emit(current_weapon)
 	
-	# Apply camera zoom based on weapon
+	# Apply camera zoom based on weapon ID
 	if weapon_id == "sniper":
 		apply_camera_zoom(sniper_zoom)
 	else:
 		apply_camera_zoom(default_zoom)
 
 func _on_equip_finished(weapon_id: String) -> void:
-	# Called when equip cooldown finishes
-	pass  # Equip is complete, weapon can now fire
+	pass
 
 func _on_weapon_unlocked(weapon_id: String) -> void:
+	# Check if we already have this weapon to prevent duplicates
+	for w in unlocked_weapons:
+		if w.stats.weapon_id == weapon_id:
+			return
+
 	var scene_path: String = Global.get_weapon_scene_path(weapon_id)
 		
 	if scene_path != "":
 		var weapon_scene = load(scene_path) as PackedScene
-		var clean_weapon = weapon_scene.instantiate() as Weapon
-		clean_weapon.rotation = 0
-		weapon_holder.add_child(clean_weapon)
-		unlocked_weapons.append(clean_weapon)
+		var new_weapon = weapon_scene.instantiate() as Weapon
+		new_weapon.rotation = 0
+		
+		# CRITICAL: Set metadata so equip_system can track it
+		new_weapon.set_meta("weapon_id", weapon_id)
+		
+		weapon_holder.add_child(new_weapon)
+		unlocked_weapons.append(new_weapon)
+		
 		# Link new weapon to equip system BEFORE switching
 		if equip_system != null:
-			clean_weapon.set_equip_system(equip_system)
-		# Switch to the newly unlocked weapon after a brief delay to ensure state sync
+			new_weapon.set_equip_system(equip_system)
+		
+		# Auto-equip the new pickup
 		await get_tree().process_frame
 		switch_weapon(unlocked_weapons.size() - 1)
 
@@ -234,10 +223,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			switch_weapon(3)
 
 func apply_camera_zoom(target_zoom: Vector2) -> void:
-	# If a zoom is currently happening, stop it so we can start the new one smoothly
+	if camera == null: return
+	
 	if zoom_tween and zoom_tween.is_valid():
 		zoom_tween.kill()
 	
-	# Create a new tween (smooth transition) for the camera
 	zoom_tween = create_tween()
 	zoom_tween.tween_property(camera, "zoom", target_zoom, zoom_speed).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
